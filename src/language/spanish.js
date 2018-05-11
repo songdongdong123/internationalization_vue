@@ -390,8 +390,7 @@ export default {
   },
   newLogin: {
     creatAccount: 'Crea una cuenta con tu mail',
-    hasAccount: 'Ya tienes una cuenta？',
-    tologin: 'Ingresa aqui'
+    tologin: 'Ingresa'
   },
   newsigin: {
     createaccount: 'Crea tu cuenta',

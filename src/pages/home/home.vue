@@ -131,12 +131,12 @@
                   <div class="goodsimg">
                     <img v-lazy="list.thumbImageBig" alt="">
                     <!-- <img src="./test.png" alt=""> -->
-                    <p class="productName">{{list.goodsName}}</p>
+                    <!-- <p class="productName">{{list.goodsName}}</p> -->
                   </div>
+                  <p class="productName">{{list.goodsName}}</p>
                   <div class="goodsMsg">
                     <p class="delbase">$1 para ganar</p>
                     <del class="delbase">${{list.curprice}}.00</del>
-                    <!-- <p class="productName">{{list.goodsName}}</p> -->
                   </div>
                   <div class="proess">
                     <div class="leabel">
@@ -661,14 +661,13 @@
           // margin-top:0.1rem
           .recommendlist
             .recommenditem
-              height:5.7rem
               background:#fff
               margin:auto 0.2rem
               margin-bottom:0.2rem
-              // padding-top:0.2rem
               border-radius:0.1rem
               position:relative
               overflow: hidden
+              padding-bottom:0.3rem
               .goodsimg
                 // width:100%
                 position: relative
@@ -676,16 +675,19 @@
                 img
                   width:100%
                   height:100%
-                .productName
-                  position:absolute
-                  top:0
-                  z-index:100
-                  font-size:0.24rem
-                  color:#999
-                  padding:0.2rem
+              .productName
+                z-index:100
+                font-size:0.24rem
+                color:#999
+                padding-top:0.2rem
+                margin:auto 0.2rem
+                width:100%
+                overflow: hidden
+                text-overflow:ellipsis
+                white-space: nowrap
               .goodsMsg
                 // width:6.86rem
-                margin:auto 0.32rem
+                margin:auto 0.2rem
                 font-size:0.35rem
                 margin-top:0.2rem
                 display:flex
@@ -695,7 +697,7 @@
                   color:#000
               .proess
                 // width:6.86rem
-                margin:auto 0.32rem
+                margin:auto 0.2rem
                 font-size:0.24rem
                 .leabel
                   display:flex

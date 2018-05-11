@@ -3,7 +3,7 @@ import qs from 'qs'
 import getUrl from './baseUrl'
 import { userMsg } from '@/common/js/android'
 import { unionLogin } from 'api/login'
-// import i18n from '../../language'
+import i18n from '../../language'
 import Loading from '../../Plugins/loading/loading'
 import Errorplugins from '../../Plugins/error/error'
 // 配置axios的config
@@ -47,12 +47,18 @@ axios.interceptors.response.use((data) => {
       params: userMsg
     }).then(res => {
       if (res.data.errCode === 0 && res.data.retCode === 0) {
-        console.log(res)
+        return false
       }
     })
     let nologin = resdata.data.data.nologin
     if (!nologin) {
-      // window.location.href = `${getUrl()}/interim/${i18n.locale}`
+      // console.log(location.host)
+      // console.log(i18n.locale)
+      if (location.host === 'localhost:8089') {
+        window.location.href = `http://localhost:8089/interim/${i18n.locale}`
+      } else {
+        window.location.href = `${getUrl()}/interim/${i18n.locale}`
+      }
     }
   }
   return data

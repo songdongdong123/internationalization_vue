@@ -390,8 +390,7 @@ export default {
   },
   newLogin: {
     creatAccount: '创建邮箱账户',
-    hasAccount: '已有帐号？',
-    tologin: '点击这里登录'
+    tologin: '登录'
   },
   newsigin: {
     createaccount: '创建账号',

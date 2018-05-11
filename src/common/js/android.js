@@ -32,10 +32,10 @@ const loginState = function ({router, issueNo, free, tag, next}) {
     }
   } else {
     // if (next) {
-    //   next()
+    //   next()4111111111
     // }
     if (!getCookie('lkey')) {
-      // router.push({path: '/interim/' + i18n.locale})
+      router.push({path: '/interim/' + i18n.locale})
     }
     return true
   }

@@ -33,7 +33,8 @@
         </mt-swipe>
       </div>
       <div class="prizeMsg">
-        <p>{{issueObj.goodsName}} <span>No.{{issueObj.snatchNumber}}</span></p>
+        <p class="issueNao">No.{{issueObj.snatchNumber}}</p>
+        <p>{{issueObj.goodsName}}</p>
       </div>
       <div class="productMsg">
         <div class="product_name">
@@ -139,7 +140,7 @@
   import loading from '@/components/loading/loading'
   import { getIssueDetail } from 'api/home'
   import { getUserIgouNumberList } from 'api/order'
-  // import { loginState } from '@/common/js/android'
+  import { loginState } from '@/common/js/android'
   import { getSimpleUserInfo } from 'api/usercenter'
   export default {
     data () {
@@ -329,15 +330,33 @@
           this._getUserIgouNumberList(this.issueNo)
         }
       },
+      isInsideAndroid () {
+        if (typeof window.Android !== 'undefined') {
+          if (typeof window.Android.getLoginParam !== 'undefined') {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return false
+        }
+      },
       betBtn () {
         // 登录态校验
-        // let state = loginState({router: this.$router, issueNo: this.$route.query.issueNo, tag: this.tag})
         // cookie = true
         // let state = true
-        if (this.loginState) {
-          this.betstate = true
+        let state = loginState({router: this.$router, issueNo: this.$route.query.issueNo, tag: this.tag})
+        let isInsideAndroid = this.isInsideAndroid()
+        if (!isInsideAndroid) {
+          if (this.loginState) {
+            this.betstate = true
+          } else {
+            this.$router.push({path: '/interim/' + this.$i18n.locale})
+          }
         } else {
-          this.$router.push({path: '/interim/' + this.$i18n.locale})
+          if (state) {
+            this.betstate = true
+          }
         }
       },
       hideBet () {
@@ -493,9 +512,10 @@
       font-size:0.24rem
       padding-top:0.2rem
       padding-left:0.2rem
-      span
+      .issueNao
         color:#999999
-        padding-left:0.1rem
+        padding-bottom:0.2rem
+        // padding-left:0rem
     .productMsg
       padding:0 0.2rem 0 0.2rem
       line-height:0.4rem

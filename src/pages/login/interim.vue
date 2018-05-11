@@ -12,7 +12,7 @@
     </div>
     <div class="hasaccount" @click="toNewLogin">
       <!-- 已有账户？点击这里登录 -->
-      <p>{{$t('newLogin.hasAccount')}}<span class="tologin">{{$t('newLogin.tologin')}}</span></p>
+      <p><span class="tologin">{{$t('newLogin.tologin')}}</span></p>
     </div>
   </div>
 </template>
@@ -71,40 +71,31 @@
       text-align:center
       margin-top:0.5rem
     .createuser
-      font-size:0.24rem
+      font-size:0.3rem
       font-weight: bold
       width:6.2rem
       height:1.4rem
       margin: 0.5rem auto
       margin-top:2.4rem
       border-radius:1.4rem
-      box-shadow:1px 1px 25px #bbb
+      background:$color-meta
+      color:#fff
       // position: relative
       p
         text-align:center
         line-height:1.4rem
         position: relative
-      .email
-        position:absolute
-        display:inline-block
-        width:0.58rem
-        height:0.46rem
-        bg-image('../../common/image/email')
-        background-size: cover
-        top:50%
-        transform:translateY(-50%)
-        left:0.3rem
-        font-weight: bold
     .hasaccount
-      position:absolute
-      height:1rem
-      line-height:1rem
-      width:100%
-      font-size:0.24rem
+      border:1px solid $color-meta
+      height:1.2rem
+      line-height:1.2rem
+      width:6.2rem
+      margin:0 auto
+      margin-top:2rem
+      font-size:0.33rem
       text-align:center
+      border-radius:1.4rem
       bottom:0rem
-      color:#333
+      color:$color-meta
       font-weight: bold
-      .tologin
-        color:$color-sky-blue
 </style>

@@ -39,6 +39,7 @@
 </template>
 
 <script>
+  import getBaseUrl from '@/common/js/baseUrl'
   export default {
     data () {
       return {
@@ -66,7 +67,7 @@
       toPaySuccess () {
         // 测试支付成功页面
         if (this.ind !== '') {
-          location.href = `https://mdev.1peso.com.mx/view/openpay.html`
+          location.href = `${getBaseUrl()}/view/openpay.html`
           // this.$router.push({path: '/payform/' + this.$i18n.locale, query: {goldnums: this.paymoney, score: this.score, issueNo: this.issueNo}})
         } else {
           this.$toast({

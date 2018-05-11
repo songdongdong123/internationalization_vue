@@ -11,6 +11,9 @@ export default function getBaseUrl (type) {
   if (urls.match(/m.1peso.com.mx/) && urls.match(/m.1peso.com.mx/)[0] === 'm.1peso.com.mx') {
     baseUrl = protocol + 'm.1peso.com.mx'
   }
+  if (urls.match(/ezshop.com.mx/) && urls.match(/ezshop.com.mx/)[0] === 'ezshop.com.mx') {
+    baseUrl = protocol + 'ezshop.com.mx'
+  }
   // 开发环境判断
   if (type) {
     if (location.href.toLowerCase().match(/localhost:8088/)[0] === 'localhost:8088') {
