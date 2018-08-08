@@ -11,29 +11,32 @@
       <p class="paystate">{{$t('payform.payErr')}}</p>
       <p class="paystate1">{{description}}</p>
       <!-- 重试 -->
-      <p class="bottombtn" @click="toPayForm">{{$t('payform.retry')}}</p>
+      <!-- <p class="bottombtn" @click="toPayForm">{{$t('payform.retry')}}</p> -->
     </div>
   </div>
 </template>
 
 <script>
+  import getBaseUrl from '@/common/js/baseUrl'
   export default {
     data () {
       return {
-        description: ''
+        description: '',
+        channelType: ''
       }
     },
     created () {
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
       this.description = this.$route.query.description
     },
     methods: {
       toPayForm () {
-        // let goldnums = Number(window.localStorage.getItem('paymoney'))
-        location.href = `https://mdev.1peso.com.mx/view/openpay.html`
+        // let goldnums = Number(window.localStorage.getItem('b536a272efe64829d0'))
+        location.href = `${getBaseUrl()}/view/openpay.html?channelType=${this.channelType}`
         // this.$router.push({path: '/payform/' + this.$i18n.locale, query: {goldnums: goldnums, source: 'payerr'}})
       },
       toUsercenter () {
-        this.$router.push({path: '/usercenter/' + this.$i18n.locale})
+        this.$router.push({path: '/usercenter/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       }
     }
   }

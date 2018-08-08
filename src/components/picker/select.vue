@@ -44,13 +44,9 @@
 <style lang="stylus" scoped>
   @import "../../common/stylus/colorreset"
   .select
-    // position:absolute
-    // top:1.15rem
     width:7.05rem
     background:#fff
     z-index:20
-    // border:1px solid #f5f5f5
-    // box-shadow:10px 10px 10px #ccc
     .list
       // padding:0.2rem
       li
@@ -60,7 +56,7 @@
         display:flex
         align-items:center
         color:$color-weaken-font
-        // border-top:1px solid #f5f5f5
+        border-top:1px solid #f5f5f5
         .icon-radio
           font-size 0.4rem
           margin-right:0.3rem

@@ -1,18 +1,41 @@
 <template>
   <div class="newsignin">
     <div class="title">
-      <span @click="backUserCenter" class="left icon-fanhui1"></span>
+      <div class="titlecontainer" @click="backUserCenter">
+        <span  class="left icon-fanhui1"></span>
+      </div>
     </div>
     <div class="container">
-      <p class="createtitle">$1.00 Para ganar</p>
-      <div class="email border-1px">
-        <input type="text" :placeholder="$t('login.username_text')" v-model="username">
+      <p class="createtitle">
+        <span class="logo">1PESO.MX</span>
+      </p>
+      <p class="Este" v-show="nosignstate">Este buzón no registrados</p>
+      <div class="email border-1px" :class="{'errorborder': nosignstate}">
+        <input type="text"
+          v-on:input="checkoutstate" 
+          :placeholder="$t('login.username_text')" v-model="username">
         <div class="clear" @click="clearContent(1)" v-show="username">
           <span></span>
         </div>
       </div>
-      <div class="password">
-        <input 
+      <p class="contrasea" v-show="passwordstate">Error de contraseña</p>
+      <div class="password" :class="{'errorborder':passwordstate}">
+        <div class="emaillist" v-show="emalistate">
+          <ul class="list">
+            <li class="item" v-for="list in emalilist.map(v => {
+              if (username) {
+                let reg = new RegExp(username)
+                v = username.split('@')[0] + v
+                if (reg.test(v)) {
+                  return v
+                }
+              }
+              
+            })" @click="chooseThisEmail(list)" v-show="list">{{list}}</li>
+          </ul>
+        </div>
+        <input
+          v-on:input="passwordInput" 
           :type="type" :placeholder="$t('login.password_text')" v-model="password">
         <div class="clear" @click="clearContent(2)" v-show="password">
           <span></span>
@@ -27,6 +50,7 @@
         <p>{{$t('login.login_text')}}</p>
       </div>
     </div>
+    <p class="Crear" @click="toSigin">Regístrate</p>
   </div>
 </template>
 
@@ -39,15 +63,48 @@
         choosed: true,
         username: '',
         password: '',
-        type: 'password'
+        type: 'password',
+        channelType: '',
+        emalilist: [
+          '@gmail.com',
+          '@hotmail.com',
+          '@yahoo.com'
+        ],
+        emalistate: false,
+        nosignstate: false,
+        passwordstate: false
       }
+    },
+    created () {
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
     },
     methods: {
       toForgotPass () {
-        this.$router.push('/newforgot/' + this.$i18n.locale)
+        this.$router.push({path: '/newforgot/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
+      },
+      toSigin () {
+        // 前往注册页面
+        this.$router.replace({path: '/newsignin/' + this.$i18n.locale,
+          query: {
+            channelType: this.channelType,
+            channelTag: this.channelTag,
+            issueNo: this.$route.query.issueNo,
+            activityType: this.$route.query.activityType
+          }})
+      },
+      passwordInput () {
+        this.passwordstate = false
       },
       backUserCenter () {
         this.$router.back()
+      },
+      checkoutstate () {
+        this.nosignstate = false
+        if (this.username) {
+          this.emalistate = true
+        } else {
+          this.emalistate = false
+        }
       },
       clearContent (type) {
         // 清除内容
@@ -60,22 +117,45 @@
       showPassword () {
         // 显示密码
         this.type = this.type === 'password' ? 'text' : 'password'
-        console.log(this.type)
+      },
+      chooseThisEmail (v) {
+        // 选择一个邮箱后缀
+        this.username = v
+        this.emalistate = false
+        this.usernameState = false
       },
       getSecretStr () {
         // 获取登录的检验串
-        getLoginSecret().then(res => {
-          if (res.data.errCode === this.$ERR_CODE && res.data.retCode === this.$RET_CODE) {
-            let secretValue = res.data.data.secretValue
-            let secretKey = res.data.data.secretKey
-            this._loginIn(secretValue, secretKey)
-          } else {
+        if (this.username && this.password) {
+          getLoginSecret({}).then(res => {
+            if (res.data.errCode === this.$ERR_CODE && res.data.retCode === this.$RET_CODE) {
+              let secretValue = res.data.data.secretValue
+              let secretKey = res.data.data.secretKey
+              this._loginIn(secretValue, secretKey)
+            } else {
+              this.$toast({
+                message: res.data.msg,
+                duration: 2000
+              })
+            }
+          })
+        } else {
+          if (!this.username) {
             this.$toast({
-              message: res.data.msg,
+              message: 'Por favor ingrese su dirección de correo electrónico',
               duration: 2000
             })
+            this.nosignstate = true
+            return
           }
-        })
+          if (!this.password) {
+            this.$toast({
+              message: 'Por favor ingrese su contraseña',
+              duration: 2000
+            })
+            this.passwordstate = true
+          }
+        }
       },
       _loginIn (secretValue, secretKey) {
         this.$loading({state: true})
@@ -91,24 +171,48 @@
           if (res.data.errCode === this.$ERR_CODE && res.data.retCode === this.$RET_CODE) {
             // 登录成功后的跳转到指定页面
             if (this.$route.query.name === 'usercenter') {
-              this.$router.replace('/usercenter/' + this.$i18n.locale)
+              this.$router.replace({path: '/usercenter/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
             } else if (this.$route.query.name === 'recordlist') {
-              this.$router.replace('/recordlist/' + this.$i18n.locale)
-            } else if (this.$route.query.name === 'productdetail') {
+              this.$router.replace({path: '/recordlist/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
+            } else if (this.$route.query.activityType) {
+              this.$router.replace({
+                path: '/activityproduct/' + this.$i18n.locale,
+                query: {
+                  issueNo: this.$route.query.issueNo,
+                  channelType: this.channelType,
+                  channelTag: this.channelTag,
+                  falg: 'home'
+                }
+              })
+              return null
+            } else if (this.$route.query.issueNo) {
               this.$router.replace({
                 path: '/productdetail/' + this.$i18n.locale,
                 query: {
-                  issueNo: this.$route.query.issueNo
+                  issueNo: this.$route.query.issueNo,
+                  channelType: this.channelType,
+                  channelTag: this.channelTag,
+                  falg: 'home'
                 }
               })
+              return null
             } else {
-              this.$router.replace('/home/' + this.$i18n.locale)
+              this.$router.replace({path: '/home/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
             }
           } else {
-            this.$toast({
-              message: res.data.msg,
-              duration: 1000
-            })
+            switch (res.data.retCode) {
+              case 1508:
+                this.nosignstate = true
+                break
+              case 1510:
+                this.passwordstate = true
+                break
+              default:
+                this.$toast({
+                  message: res.data.msg,
+                  duration: 1000
+                })
+            }
           }
         })
       }
@@ -121,6 +225,11 @@
   @import "../../common/stylus/marginAndsize"
   @import "../../common/stylus/mixin"
   @import "../../common/stylus/fontsize"
+  @media (max-height: 400px) { 
+	  .Crear {
+	    	display: none;
+	  }
+	}
   .newsignin
     min-height:100vh
     position:absolute
@@ -128,37 +237,48 @@
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      // width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
-      .left
-        position:absolute
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        left:0
-        font-size:0.4rem
-        color:$color-meta
+      .titlecontainer
+        display:flex
+        justify-content:space-between
+        align-items:center
+        height:100%
+        margin:auto 0.32rem
+        .left
+          position:absolute
+          padding:0 0.3rem 0 0.25rem
+          left:0
+          font-size:0.4rem
+          color:$color-meta
     .container
       margin:auto 0.3rem
       margin-top:0.9rem
       .createtitle
-        font-size:0.36rem
+        font-size:0.6rem
         padding-top:0.75rem
-        color:#cccccc
+        color:#333
         text-align:center
+        margin-bottom:0.4rem
+        .logo
+          // display:inline-block
+          // width:1.59rem
+          // height:0.7rem
+          // bg-image('./img/logo')
+          // background-size:1.59rem 0.7rem
+          // background-position center
+          // background-repeat: no-repeat
       .email
-        height:1.2rem
+        height:1rem
         font-size:0.3rem
         display:flex
         align-items:flex-end
         justify-content:space-between
         position: relative
-        margin-top:0.4rem
         input
           display:inline-block
           height:0.8rem
@@ -179,9 +299,15 @@
             background-size: cover           
       .border-1px
         border-bottom:1px solid #cccccc
+      .errorborder
+        border-color:$color-meta
+      .Este
+        font-size:0.24rem
+        margin-top:1rem
+        color:$color-meta
     .password
       font-size:0.3rem
-      height:1.34rem
+      height:1rem
       display:flex
       align-items:flex-end
       border-bottom:1px solid #cccccc
@@ -218,6 +344,21 @@
           height:0.26rem
           bg-image('../../common/image/eyes')
           background-size: cover
+    .errorborder
+      border-color:$color-meta
+    .contrasea
+      font-size:0.24rem
+      color:$color-meta
+      margin-top:0.3rem
+    .emaillist
+      position:absolute
+      width:100%
+      background:#fff
+      top:0
+      .list
+        .item
+          height:0.8rem
+          line-height:0.8rem
     .olvide
       font-size:0.24rem
       color:#999
@@ -232,5 +373,14 @@
       color:#fff
       border-radius:0.1rem
       margin-top:0.58rem
+    .Crear
+      position:absolute
+      height:1rem
+      line-height:1rem
+      width:100%
+      bottom:0
+      text-align:center
+      font-size:0.3rem
+      color:$color-sky-blue
 </style>
 

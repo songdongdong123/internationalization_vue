@@ -34,7 +34,6 @@
           :on-success="handleSuccess"
           :limit="3"
           :on-remove="handleRemove">
-          <!-- <i class="el-icon-plus"></i> -->
           <div class="el-upload__text">
             <!-- 添加图片 -->
             <p class="base addimg eladdimages">{{$t('shareorder.addImg')}}</p>
@@ -95,6 +94,11 @@
           }).then(res => {
             if (res.data.errCode === this.$ERR_CODE && res.data.retCode === this.$RET_CODE) {
               this.setSuccessPage(true)
+            } else {
+              this.$toast({
+                message: res.data.msg,
+                duration: 2000
+              })
             }
           })
         }
@@ -127,7 +131,7 @@
           headers: {'Content-Type': 'multipart/form-data'}
         }
         uploadImageFile(param.get('file'), config).then(res => {
-          // console.log(res)
+          console.log(res)
         })
       },
       checkTextCounts () {

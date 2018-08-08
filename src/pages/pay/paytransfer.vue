@@ -20,10 +20,12 @@
       return {
         time: 30,
         timer: null,
-        score: ''
+        score: '',
+        channelType: ''
       }
     },
     created () {
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
       this.payId = this.$route.query.strPayId
       this.score = this.$route.query.score
       this.issueNo = this.$route.query.issueNo
@@ -48,13 +50,20 @@
           if (res.data.errCode === this.$ERR_CODE && res.data.retCode === this.$RET_CODE) {
             if (res.data.data.state === 5) {
               clearInterval(this.timer)
-              this.$router.push({path: '/paysuccess/' + this.$i18n.locale, query: {money: res.data.data.money, score: this.score, issueNo: this.issueNo}})
+              this.$router.push({path: '/paysuccess/' + this.$i18n.locale,
+                query: {
+                  money: res.data.data.money,
+                  score: this.score,
+                  issueNo: this.issueNo,
+                  channelType: this.channelType,
+                  channelTag: this.channelTag
+                }})
             } else if (res.data.data.state === 10) {
               clearInterval(this.timer)
-              this.$router.push({path: '/payerr/' + this.$i18n.locale, query: {description: res.data.data.description}})
+              this.$router.push({path: '/payerr/' + this.$i18n.locale, query: {description: res.data.data.description, channelType: this.channelType, channelTag: this.channelTag}})
             }
             if (this.time === 0 && res.data.data.state === 2) {
-              this.$router.push({path: '/paytimeout/' + this.$i18n.locale})
+              this.$router.push({path: '/paytimeout/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
             }
           }
         })

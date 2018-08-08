@@ -1,17 +1,19 @@
 <template>
   <div class="errorplugins" v-if="state">
     <div class="errorcontainer">
-      <p class="unline">网络中断，请检查您的网络设置....</p>
-      <p class="reload" @click="reloadpage">刷新</p>
+      <p class="unline">{{I18n.t('networkState.breakNetWork')}}....</p>
+      <p class="reload" @click="reloadpage">{{I18n.t('networkState.reload')}}</p>
     </div>
   </div>
 </template>
 
 <script>
+  import i18n from '../../language'
   export default {
     data () {
       return {
-        state: false
+        state: false,
+        I18n: i18n
       }
     },
     methods: {
@@ -37,11 +39,14 @@
     .errorcontainer
       text-align:center
       .unline
+        margin: 0 auto
         font-size:0.24rem
+        line-height:0.5rem
+        width:70%
       .reload
         font-size:0.3rem
         color:#2057c7
-        margin-top:0.3rem
+        margin-top:0.1rem
         height:0.9rem
         line-height:0.9rem
 </style>

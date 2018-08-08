@@ -9,7 +9,14 @@ const state = {
   listenScroll: true,
   shortofgold: false,
   sendsuccess: false,
-  siginsuccess: false
+  siginsuccess: false,
+  proIssueNo: {},
+  createUserMsg: {},
+  homescrollY: 0,
+  paymoney: '',
+  clectstate: false,
+  navmsg: {},
+  downloadstate: false
 }
 
 export default state

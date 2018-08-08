@@ -1,17 +1,21 @@
 import { unionLogin, recordDeviceInfo } from 'api/login'
 import { getCookie, setCookie } from '@/common/js/common'
+import { getQueryString } from './common'
 import getUrl from './baseUrl'
 import i18n from '../../language'
+let channelType = getQueryString('channelType')
+let channelTag = getQueryString('channelTag')
 let userMsg = ''
 let unionLoginState = false
-const loginState = function ({router, issueNo, free, tag, next}) {
-  let state = isInsideAndroid()
+const loginState = function ({router, issueNo, free, tag, activityType, next, to}) {
+  // let state = isInsideAndroid()
+  let state = false
   if (state) {
     userMsg = window.Android.getLoginParam()
-    toUnionLogin(userMsg, next)
+    // toUnionLogin(userMsg, next)
     let cookie = getCookie('lkey')
     if (!cookie && !userMsg) {
-      toUnionLogin(userMsg)
+      // toUnionLogin(userMsg)
     }
     if (!userMsg) {
       if (next) {
@@ -31,11 +35,15 @@ const loginState = function ({router, issueNo, free, tag, next}) {
       return true
     }
   } else {
-    // if (next) {
-    //   next()4111111111
-    // }
     if (!getCookie('lkey')) {
-      router.push({path: '/interim/' + i18n.locale})
+      if (location.hostname !== 'localhost') {
+        router.push({path: '/interim/' + i18n.locale,
+          query: {
+            channelType: channelType,
+            channelTag: channelTag,
+            activityType: activityType
+          }})
+      }
     }
     return true
   }
@@ -57,7 +65,6 @@ const toUnionLogin = function (Msg, next) {
   let state = isInsideAndroid()
   if (state) {
     if (next) {
-      console.log('中断')
       next(false)
     }
     unionLogin({
@@ -95,12 +102,14 @@ const checkAppLoginState = function () {
 }
 
 const checkPageScore = function (to, next) {
+  // 2018-6-6废弃
   // 检测页面来源
-  let state = isInsideAndroid()
+  // let state = isInsideAndroid()
+  let state = false
   if (typeof to.query.source !== 'undefined') {
     if (to.query.source === 'android') {
       if (state) {
-        toUnionLogin(window.Android.getLoginParam(), next)
+        // toUnionLogin(window.Android.getLoginParam(), next)
       }
     } else {
       next()
@@ -128,5 +137,6 @@ export {
   userMsg,
   checkAppLoginState,
   checkPageScore,
-  unionLoginState
+  unionLoginState,
+  toUnionLogin
 }

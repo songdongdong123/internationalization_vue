@@ -56,7 +56,9 @@
         thumbImage: '',
         orderIncrId: '',
         orderNo: '',
-        loading: false
+        loading: false,
+        channelType: '',
+        channelTag: ''
       }
     },
     created () {
@@ -64,11 +66,15 @@
         this.goodName,
         this.thumbImage,
         this.orderIncrId,
-        this.orderNo] = [
+        this.orderNo,
+        this.channelType,
+        this.channelTag] = [
           this.$route.query.goodName,
           this.$route.query.thumbImage,
           this.$route.query.orderIncrId,
-          this.$route.query.orderNo
+          this.$route.query.orderNo,
+          this.$route.query.channelType,
+          this.$route.query.channelTag
         ]
       this._getUserAddressList()
     },
@@ -77,15 +83,15 @@
         if (this.$route.query.issueNo) {
           this.$router.back()
         } else {
-          this.$router.push('/userrecord/' + this.$i18n.locale)
+          this.$router.push({path: '/userrecord/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
         }
       },
       toAddresslist () {
         // this.$router.push('/useraddress/' + this.$i18n.locale)
-        this.$router.push({path: '/addresslist/' + this.$i18n.locale, query: {source: 'addressorder'}})
+        this.$router.push({path: '/addresslist/' + this.$i18n.locale, query: {source: 'addressorder', channelType: this.channelType, channelTag: this.channelTag}})
       },
       toUseraddress () {
-        this.$router.push('/useraddress/' + this.$i18n.locale)
+        this.$router.push({path: '/useraddress/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       },
       submitAddress () {
         confirmAddress({
@@ -181,6 +187,10 @@
           margin-left:0.4rem
           .name
             font-size:0.3rem
+            width:5.3rem
+            overflow: hidden
+            text-overflow:ellipsis
+            white-space: nowrap
           .introduce
             font-size:$font-meta
             margin-top:0.1rem

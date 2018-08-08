@@ -16,7 +16,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$route.params.lang = 'en')
     this.$i18n.locale = this.$route.params.lang === 'zh' ? 'zh' : 'en'
   },
   computed: {

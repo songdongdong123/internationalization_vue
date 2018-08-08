@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-WTW3VKH');</script>
+    <!-- End Google Tag Manager -->
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type"> 
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
@@ -31,26 +34,46 @@
     <meta name="browsermode" content="application">
     <!-- QQ应用模式 -->
     <meta name="x5-page-mode" content="app">
+
+
+    <meta property="fb:app_id" content="1862288784072980" />
+    <meta property="og:url"    content="https://1peso.mx" />
+    <meta property="og:type"   content="website" />
+    <meta property="og:title" content="1PESO.MX">
+    <meta property="og:description" content="ICUALQUIER PRODUCTO PUEDE SER TUYO POR ¡SÓLO I PESO！">
+    <meta property="og:image" content="https://plb-common.oss-cn-hangzhou.aliyuncs.com/igou_apk/igou_android_20180717175537.png">
+
+    <!-- twitter-->
+    <meta name="twitter:widgets:new-embed-design" content="on">
+    <meta name="twitter:widgets:csp" content="on">
+    <meta name="twitter:card" content ="summary"/>
+    <meta name="twitter:title" content="1PESO.MX">
+    <meta name="twitter:url"    content="https://1peso.mx" />
+    <meta name="twitter:description" content="ICUALQUIER PRODUCTO PUEDE SER TUYO POR ¡SÓLO I PESO！">
+    <meta name="twitter:image" content="https://plb-common.oss-cn-hangzhou.aliyuncs.com/igou_apk/igou_android_20180717175537.png" />
+
     <!-- windows phone 点击无高光 -->
     <meta name="msapplication-tap-highlight" content="no">
     <!-- No Baidu Siteapp -->
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">  
-    <title>$1 para ganar</title>
-    <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
-    <script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function() {
-          OpenPay.setId('m4lrjtfr0ozbsjjnt5k8');
-          OpenPay.setApiKey('pk_8d79c69529f84d14a200209f2ccaabfc');
-          OpenPay.setSandboxMode(true);
-          var deviceSessionId = OpenPay.deviceData.setup('payment-form', 'deviceIdHiddenFieldName');
-      });
-    </script> -->
+    <title>1PESO.MX</title>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', <%= htmlWebpackPlugin.options.ga %>, 'auto');
+        ga('send', 'pageview');
+    </script>
   </head>
   <body >
-    <div id="app"></div>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WTW3VKH"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+    <div id="app">
+    </div>
     <script>
      (function () {
       document.addEventListener('DOMContentLoaded', function () {
@@ -64,6 +87,24 @@
         }
       }
     })()
+    </script>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId            : '1862288784072980',
+          autoLogAppEvents : true,
+          xfbml            : false,
+          version          : 'v3.0'
+        });
+      };
+
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/es_LA/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
     </script>
   </body>
 </html>

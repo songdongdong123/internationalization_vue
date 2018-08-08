@@ -30,6 +30,27 @@ const mutations = {
   },
   [types.SET_SIGIN_SUCCESS] (state, falg) {
     state.siginsuccess = falg
+  },
+  [types.SET_CREATE_USER_MSG] (state, msg) {
+    state.createUserMsg = msg
+  },
+  [types.SET_PRO_ISSUE_NO] (state, issueno) {
+    state.proIssueNo = issueno
+  },
+  [types.SET_HOME_SCROLLY] (state, y) {
+    state.homescrollY = y
+  },
+  [types.SET_PAYMONEY] (state, num) {
+    state.paymoney = num
+  },
+  [types.SET_CLECT_STATE] (state, falg) {
+    state.clectstate = falg
+  },
+  [types.SET_NAV_MSG] (state, msg) {
+    state.navmsg = msg
+  },
+  [types.SET_DOWN_LOAD] (state, falg) {
+    state.downloadstate = falg
   }
 }
 

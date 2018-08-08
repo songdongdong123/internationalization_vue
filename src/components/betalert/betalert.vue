@@ -4,6 +4,8 @@
     <shortOf
       :goldnumber="goldnumber"
       :issueNo="issueNo"
+      :channelType="channelTypes"
+      :channelTag="channelTags"
     ></shortOf>
     <div class="mask" v-show="loading"></div>
     <div class="loading" v-show="loading">
@@ -19,7 +21,7 @@
         <!-- 1金币/份 -->
         <p class="unit">{{$t('beartAlert.unit')}}</p>
         <!-- 请输入正确的份数 -->
-        <p class="errorMsg" v-show="errorState">{{$t('beartAlert.errorMsg')}}</p>
+        <!-- <p class="errorMsg" v-show="errorState">{{$t('beartAlert.errorMsg')}}</p> -->
       </div>
       <div class="counter">
         <span @click="reduceGold">-</span>
@@ -73,6 +75,18 @@
       goldnumber: {
         type: Number,
         default: 0
+      },
+      channelTypes: {
+        type: String,
+        default: ''
+      },
+      channelTags: {
+        type: String,
+        default: '6_7_0_0'
+      },
+      activityType: {
+        type: Number,
+        default: 0
       }
     },
     data () {
@@ -114,8 +128,13 @@
         }
       },
       submitBet () {
-        if (window._czc) {
-          window._czc.push(['_trackEvent', '支付按钮', '购买', '购买', 1, this.issueNo])
+        if (this.$ga) {
+          this.$ga.event({
+            eventCategory: '渠道',
+            eventAction: '点击提交份数',
+            eventLabel: `渠道:${this.channelTags}/商品期号:${this.issueNo}`,
+            eventValue: 0
+          })
         }
         let state = verifyBetNumber(this.betNumGold)
         if (state) {
@@ -130,7 +149,7 @@
                 if (res.data.errCode === this.$ERR_CODE && res.data.retCode === this.$RET_CODE) {
                   this.loading = false
                   this.$emit('hideThis')
-                  this.$router.push({path: '/success/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, part: this.betNumGold}})
+                  this.$router.push({path: '/success/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, part: this.betNumGold, channelType: this.channelTypes, channelTag: this.channelTags}})
                 } else {
                   this.loading = false
                   this.$toast({
@@ -142,7 +161,23 @@
               })
             }, 500)
           } else {
-            this.setShortOfGold(true)
+            // 去充值前管理当前路由参数信息
+            let proIssueNo = {
+              issueNo: this.issueNo,
+              tag: this.$route.query.tag,
+              falg: this.$route.query.falg,
+              activityType: 4
+            }
+            window.localStorage.setItem('proIssueNo', JSON.stringify(proIssueNo))
+            this.$router.push({path: '/pay/' + this.$i18n.locale,
+              query: {
+                score: 'activityproduct',
+                issueNo: this.issueNo,
+                channelType: this.channelType,
+                channelTag: this.channelTag,
+                activityType: 4
+              }})
+            // this.setShortOfGold(true)
           }
         } else {
           this.loading = false
@@ -188,7 +223,7 @@
   }
   @import "../../common/stylus/colorreset"
   .betalert
-    position:absolute
+    position:fixed
     height:100%
     width:100%
     display:flex
@@ -196,7 +231,7 @@
     top:1rem
     // top:0
     left:0
-    z-index:1000
+    z-index:3000
     .mask
       position:absolute
       height:5.5rem

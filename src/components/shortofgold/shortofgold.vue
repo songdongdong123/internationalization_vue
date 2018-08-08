@@ -1,7 +1,7 @@
 <template>
 <transition name="fade">
-  <div class="shortofgold" v-show="shortofgold" @click="hideThisDialog">
-    <div class="return">
+  <div class="shortofgold" v-show="shortofgold">
+    <div class="return" @click="hideThis">
       <span class="icon-fanhui1"></span>
     </div>
     <div class="title">
@@ -14,7 +14,10 @@
       <p class="shorof">{{$t('payform.account')}}：{{goldnumber}} {{$t('beartAlert.gold')}}</p>
     </div>
     <!-- 充值金币 -->
-    <p class="topaybtn" @click.stop="toPayWay">{{$t('payform.payBtnText')}}</p>
+    <!-- <p class="topaybtn" @click.stop="toPayWay">{{$t('payform.payBtnText')}}</p> -->
+    <div class="bottom" @click.stop="toPayWay">
+      <p>{{$t('payform.payBtnText')}}</p>
+    </div>
   </div>
 </transition>
 </template>
@@ -28,6 +31,14 @@
         default: 0
       },
       issueNo: {
+        type: String,
+        default: ''
+      },
+      channelType: {
+        type: String,
+        default: ''
+      },
+      channelTag: {
         type: String,
         default: ''
       }
@@ -45,9 +56,10 @@
     methods: {
       toPayWay (list) {
         this.setShortOfGold(false)
-        this.$router.push({path: '/pay/' + this.$i18n.locale, query: {score: 'productdetail', issueNo: this.issueNo}})
+        this.$router.push({path: '/pay/' + this.$i18n.locale, query: {score: 'productdetail', issueNo: this.issueNo, channelType: this.channelType, channelTag: this.channelTag}})
       },
-      hideThisDialog () {
+      hideThis () {
+        // 关闭金币不足弹窗
         this.setShortOfGold(false)
       },
       ...mapMutations({
@@ -110,8 +122,24 @@
       text-align: center
       font-size:0.3rem
       color:$color-meta
-      border:0.01rem solid $color-meta
+      border:1px solid $color-meta
       height:0.8rem
       line-height:0.8rem
       border-radius:0.1rem
+    .bottom
+      position:absolute
+      width: 100%
+      bottom: 2rem
+      text-align: center
+      font-size: 0.35rem
+      color: #ff2700
+      display: flex
+      justify-content: center
+      p
+        width: 2.7rem
+        height: 0.8rem
+        background: #ff2700
+        line-height: 0.8rem
+        border-radius: 0.1rem
+        color: #fff
 </style>

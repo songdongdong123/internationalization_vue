@@ -1,5 +1,5 @@
 <template>
-  <div class="loadingPlugins" v-if="state">
+  <div class="loadingPlugins" v-if="state" @touchmove.prevent>
     <div class="loadingcontainer">
       <img width="30" height="30" src="../img/loading.gif" alt="">
       <p class="desc">loading</p>
@@ -20,7 +20,7 @@
 <style lang="stylus">
   .loadingPlugins
     position:fixed
-    z-index:2002
+    z-index:9999
     height:100%
     width:100%
     background:rgba(255,255,255,.6)

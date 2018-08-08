@@ -1,14 +1,10 @@
 <template>
   <div class="previous">
-    <!-- <div class="meta">
-      <div class="returnIcon" @click="backPrevePage">
-        <span class="icon-fanhui"></span>
-        <span class="backText">{{$t('previous.returnText')}}</span>
-      </div>
-    </div> -->
     <div class="title">
-      <span @click="backPrevePage" class="left icon-fanhui1"></span>
-      <p>{{$t('previous.meta')}}</p>
+      <div class="titlecontainer">
+        <span @click="backPrevePage" class="left icon-fanhui1"></span>
+        <p>{{$t('previous.meta')}}</p>
+      </div>
     </div>
     <div class="previouslist">
       <scroll
@@ -60,10 +56,12 @@
         tempList: [],
         page: 0,
         loading: false,
-        pageCount: 0
+        pageCount: 0,
+        channelType: ''
       }
     },
     created () {
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
       this.itemId = this.$route.query.itemId
       this._getOldIssueList({})
       scrollTo(0, 0)
@@ -76,9 +74,9 @@
       toPreviousPro (issueNo, activityType) {
         // this.$router.push({path: '/productdetail/' + this.$i18n.locale, query: {issueNo: issueNo, previous: 1}})
         if (activityType === 0) {
-          this.$router.push({path: '/productdetail/' + this.$i18n.locale, query: {issueNo: issueNo, previous: 1}})
+          this.$router.push({path: '/productdetail/' + this.$i18n.locale, query: {issueNo: issueNo, previous: 1, channelType: this.channelType, channelTag: this.channelTag}})
         } else {
-          this.$router.push({path: '/freeproduct/' + this.$i18n.locale, query: {issueNo: issueNo, freestate: 1, pro: 'pro'}})
+          this.$router.push({path: '/freeproduct/' + this.$i18n.locale, query: {issueNo: issueNo, freestate: 1, pro: 'pro', channelType: this.channelType, channelTag: this.channelTag}})
         }
       },
       _getOldIssueList ({page = 0, pageSize = 10}) {
@@ -127,25 +125,27 @@
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
       border-bottom:1px solid $color-border
-      .left
-        position:absolute
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        left:0
-        font-size:0.4rem
-        color:$color-meta
-      p
-        text-align:center
-        width:100%
+      .titlecontainer
+        display:flex
+        justify-content:space-between
+        align-items:center
+        margin:auto 0.32rem
+        .left
+          position:absolute
+          padding:0 0.3rem 0 0.25rem
+          left:0
+          font-size:0.4rem
+          color:$color-meta
+        p
+          text-align:center
+          width:100%
     .previouslist
       padding-top:0.9rem
       .list

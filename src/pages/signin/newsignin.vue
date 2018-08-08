@@ -4,9 +4,15 @@
       :names="names"
       :surname="surname"
       :username="username"
+      :channelType="channelType"
+      :channelTag="channelTag"
+      :activityType="activityType"
+      :issueNo="issueNo"
       v-if="siginsuccess"></singinsuccess>
     <div class="title">
-      <span @click="backUserCenter" class="left icon-fanhui1"></span>
+      <div class="titlecontainer" @click="backUserCenter">
+        <span class="left icon-fanhui1"></span>
+      </div>
     </div>
     <div class="container">
       <!-- 创建帐号 -->
@@ -18,6 +24,35 @@
           v-model="username">
         <div class="clear" v-show="username"  @click="clearThis(1)">
           <span></span>
+        </div>
+      </div>
+      <div class="AuthCode" >
+        <div class="Autcodeleft" :class="{'errorBorder':AuthcodeState}">
+          <input type="text" 
+            v-on:input="checkoutState(5)"
+            placeholder="Código de verificación" 
+            v-model="Autcode">
+          <div class="clear" v-show="Autcode"  @click="clearThis(5)">
+            <span></span>
+          </div>
+        </div>
+        <p class="sendauthcode" @click.stop="_sendAuthCode" :class="{'activeAuthButton':AuthButtonState}">
+          <span>{{AuthbuttonText}}</span>
+        </p>
+        <!-- emalistate -->
+         <div class="autosuffix" v-show="emalistate">
+           <ul class="email_list">
+            <li v-for="list in emalilist.map(v=>{
+              if (username) {
+                  let reg = new RegExp(username)
+                  v = username.split('@')[0] + v
+                  if (reg.test(v)) {
+                    return v
+                  }
+                }
+              })" @click.stop="chooseThisEmail(list)" v-show="list">{{list}}</li>
+
+           </ul>
         </div>
       </div>
       <div class="names">
@@ -46,9 +81,16 @@
           v-on:input="checkoutState(3)" 
           :placeholder="$t('newsigin.password')" 
           v-model="password">
-        <div class="show" v-show="password" @click="showThis">
+        <div class="show" v-show="password" @click="showThis(1)">
           <span></span>
         </div>
+      </div>
+      <div class="password">
+        <input 
+          type="tel"
+          v-on:input="checkoutState(3)" 
+          placeholder="Código de invitación (Opcional)" 
+          v-model="Invitationcode">
       </div>
       <div class="userrlus">
         <div class="usertoast">
@@ -62,6 +104,7 @@
         <!-- 注册 -->
         <p>{{$t('newsigin.create')}}</p>
       </div>
+      <p class="seguridad">Por la seguridad de la cuenta y la eficiencia del envío, favor de regirstrarse con su propio correo electrónico.</p>
     </div>
   </div>
 </template>
@@ -69,36 +112,120 @@
 <script>
   import singinsuccess from '@/components/successpage/singinsuccess'
   import { mapGetters, mapMutations } from 'vuex'
-  import { regUser } from 'api/login'
+  import { regUser, sendAuthCode } from 'api/login'
   import md5 from 'js-md5'
+  import Fingerprintjs2 from 'fingerprintjs2'
   export default {
     data () {
       return {
         choosed: false,
         username: '',
+        time: 60,
+        AuthbuttonText: 'Obtener código de verificación',
+        AuthButtonState: true,
         names: '',
         surname: '',
+        Autcode: '',
+        Invitationcode: '',
         password: '',
         usernameState: false,
+        AuthcodeState: false,
         namesState: false,
         surnameState: false,
         passwordState: false,
         submitState: false,
-        passtype: 'password'
+        passtype: 'password',
+        tempUserMsg: {},
+        channelType: '',
+        emalistate: false,
+        activityType: '',
+        emalilist: [
+          '@gmail.com',
+          '@hotmail.com',
+          '@yahoo.com'
+        ]
       }
     },
     computed: {
       ...mapGetters([
-        'siginsuccess'
+        'siginsuccess',
+        'createUserMsg'
       ])
+    },
+    created () {
+      [
+        this.channelType,
+        this.channelTag,
+        this.issueNo,
+        this.activityType
+      ] = [
+        this.$route.query.channelType,
+        this.$route.query.channelTag,
+        this.$route.query.issueNo,
+        this.$route.query.activityType
+      ]
+    },
+    mounted () {
+      this.username = this.createUserMsg.userName
+      this.password = this.createUserMsg.password
+      this.names = this.createUserMsg.names
+      this.surname = this.createUserMsg.surname
     },
     methods: {
       backUserCenter () {
+        if (this.$route.query.activity === 'activity') {
+          this.$router.replace({path: '/activity/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
+          return
+        }
         this.$router.back()
       },
-      showThis () {
+      _sendAuthCode () {
+        // 获取验证码
+        let regExp = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
+        let usernameState = regExp.test(this.username)
+        if (usernameState) {
+          if (this.time === 60) {
+            this.AuthButtonState = true
+            let timer = setInterval(() => {
+              this.AuthbuttonText = this.time
+              this.time--
+              if (this.time === 0) {
+                this.AuthbuttonText = 'Reenviar'
+                this.AuthButtonState = false
+                this.time = 60
+                clearInterval(timer)
+              }
+            }, 1000)
+            sendAuthCode({
+              mobile: this.username,
+              type: 2
+            }).then(res => {
+              if (res.data.errCode === this.$ERR_CODE && res.data.retCode === this.$RET_CODE) {
+                this.$toast({
+                  message: 'El código de verificación ha sido enviado, preste atención para verificar el buzón.',
+                  duration: 2000
+                })
+              } else {
+                this.AuthbuttonText = 'Reenviar'
+                this.AuthButtonState = false
+              }
+            })
+          }
+        } else {
+          this.usernameState = true
+          this.$toast({
+            message: this.$t('newsigin.emailErr'),
+            duration: 2000
+          })
+        }
+      },
+      showThis (type) {
         // 显示密码
-        this.passtype = this.passtype === 'password' ? 'text' : 'password'
+        switch (type) {
+          case 1:
+            this.passtype = this.passtype === 'password' ? 'text' : 'password'
+            break
+        }
       },
       clearThis (type) {
         // 清除输入框
@@ -115,7 +242,17 @@
           case 4:
             this.password = ''
             break
+          case 5:
+            this.Autcode = ''
+            break
         }
+      },
+      chooseThisEmail (v) {
+        // 选择一个邮箱后缀
+        this.username = v
+        this.AuthButtonState = false
+        this.emalistate = false
+        this.usernameState = false
       },
       checkoutState (type) {
         let regExp = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
@@ -123,7 +260,12 @@
         switch (type) {
           case 0:
             if (usernameState) {
+              this.AuthButtonState = false
               this.usernameState = false
+              this.emalistate = false
+            } else {
+              this.emalistate = true
+              this.AuthButtonState = true
             }
             break
           case 1:
@@ -141,8 +283,13 @@
               this.passwordState = false
             }
             break
+          case 5:
+            if (this.Autcode.length === 4) {
+              this.AuthcodeState = false
+            }
+            break
         }
-        if (this.username && this.names && this.surname && this.password && this.choosed) {
+        if (this.username && this.names && this.surname && this.password && this.choosed && this.Autcode) {
           this.submitState = true
         } else {
           this.submitState = false
@@ -150,23 +297,57 @@
       },
       touserlus () {
         // 查看使用条款
-        this.$router.push('/userlus/' + this.$i18n.locale)
+        this.setCreateUserMsg({
+          userName: this.username,
+          password: this.password,
+          names: this.names,
+          surname: this.surname
+        })
+        this.$router.push({path: '/userlus/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       },
       registration () {
         // 注册
-        this.checkoutform()
         this.errorToast()
-        if (this.submitState) {
-          regUser({
-            userName: this.username,
-            userType: 1002,
-            authCode: '110',
-            password: md5(this.password),
-            nickName: `${this.names} ${this.surname}`
-          }).then(res => {
-            if (res.data.errCode === this.$ERR_CODE && res.data.retCode === this.$RET_CODE) {
-              this.setsigin(true)
-            }
+        this.checkoutform()
+        if (!this.usernameState && !this.namesState && !this.surnameState && !this.passwordState && this.choosed && !this.AuthcodeState) {
+          this.$loading({
+            state: true
+          })
+          const _selt = this
+          new Fingerprintjs2().get(function (result, components) {
+            regUser({
+              deviceId: result,
+              userName: _selt.username,
+              userType: 1002,
+              authCode: _selt.Autcode,
+              invCode: _selt.Invitationcode,
+              password: md5(_selt.password),
+              nickName: `${_selt.names} ${_selt.surname}`
+            }).then(res => {
+              if (res.data.errCode === _selt.$ERR_CODE && res.data.retCode === _selt.$RET_CODE) {
+                _selt.setsigin(true)
+                // 注册成功后上报渠道
+                _selt.$loading({
+                  state: false
+                })
+                if (_selt.$ga) {
+                  _selt.$ga.event({
+                    eventCategory: '渠道',
+                    eventAction: '注册成功',
+                    eventLabel: _selt.$route.query.channelType,
+                    eventValue: 0
+                  })
+                }
+              } else {
+                _selt.$loading({
+                  state: false
+                })
+                _selt.$toast({
+                  message: res.data.msg,
+                  duration: 2000
+                })
+              }
+            })
           })
         }
       },
@@ -176,10 +357,10 @@
         if (!regExp.test(this.username)) {
           this.usernameState = true
         }
-        this.namesState = this.names === '' ? Boolean(true) : Boolean(false)
-        this.surnameState = this.surname === '' ? Boolean(true) : Boolean(false)
-        if (this.password.length < 6 || this.password.length > 20) {
-          this.passwordState = true
+        if (this.password) {
+          if (this.password.length < 6 || this.password.length > 20) {
+            this.passwordState = true
+          }
         }
       },
       errorToast () {
@@ -192,7 +373,17 @@
           })
           return false
         }
+        if (!this.Autcode) {
+          // 验证码
+          this.AuthcodeState = true
+          this.$toast({
+            message: 'Por favor ingrese el código de verificación',
+            duration: 2000
+          })
+          return false
+        }
         if (!this.names) {
+          this.namesState = true
           this.$toast({
             message: this.$t('newsigin.names'),
             duration: 2000
@@ -200,15 +391,23 @@
           return false
         }
         if (!this.surname) {
+          this.surnameState = true
           this.$toast({
             message: this.$t('newsigin.surname'),
             duration: 2000
           })
           return false
         }
-        if (!this.password) {
+        if (this.password.length < 6 || this.password.length > 20) {
           this.$toast({
             message: this.$t('newsigin.passerr'),
+            duration: 2000
+          })
+          return false
+        }
+        if (!this.choosed) {
+          this.$toast({
+            message: 'Por favor acepte la política de privacidad',
             duration: 2000
           })
           return false
@@ -217,14 +416,15 @@
       chooseThis () {
         // 统一使用条款
         this.choosed = !this.choosed
-        if (this.username && this.names && this.surname && this.password && this.choosed) {
+        if (Boolean(this.username) && this.names && this.surname && this.password && this.choosed) {
           this.submitState = true
         } else {
           this.submitState = false
         }
       },
       ...mapMutations({
-        setsigin: 'SET_SIGIN_SUCCESS'
+        setsigin: 'SET_SIGIN_SUCCESS',
+        setCreateUserMsg: 'SET_CREATE_USER_MSG'
       })
     },
     components: {
@@ -245,21 +445,24 @@
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      // width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
-      .left
-        position:absolute
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        left:0
-        font-size:0.4rem
-        color:$color-meta
+      .titlecontainer
+        display:flex
+        justify-content:space-between
+        align-items:center
+        height:0.9rem
+        margin:auto 0.32rem
+        .left
+          position:absolute
+          padding:0 0.3rem 0 0.25rem
+          left:0
+          font-size:0.4rem
+          color:$color-meta
     .container
       margin:auto 0.3rem
       margin-top:0.9rem
@@ -275,6 +478,7 @@
         align-items:flex-end
         position: relative
         transition:all .5s
+        // position: relative
         input
           display:inline-block
           height:0.8rem
@@ -303,8 +507,9 @@
       font-size:0.3rem
       display:flex
       justify-content:space-between
-      height: 1.34rem
+      height: 1rem
       width:100%
+      position: relative
       .name
         display:flex
         align-items:flex-end
@@ -361,9 +566,73 @@
             background-size: cover
       .surnameError
         border-bottom:1px solid $color-meta
+        // opacity:0.3
+    .AuthCode
+      height:1rem
+      font-size:0.3rem
+      display:flex
+      justify-content:space-between
+      align-items:flex-end
+      position: relative
+      transition:all .5s
+      .Autcodeleft
+        display:flex
+        align-items:flex-end
+        justify-content:space-between
+        width:3.28rem
+        border-bottom:1px solid #cccccc
+        transition:all .5s
+        input
+          display:inline-block
+          height:0.8rem
+          width:2.9rem
+        .clear
+          width:0.8rem
+          height:0.8rem
+          position:relative
+          span
+            right:0
+            top:50%
+            transform:translateY(-50%)
+            position:absolute
+            line-height:0.8rem
+            display:inline-block
+            width:0.22rem
+            height:0.23rem
+            bg-image('../../common/image/close')
+            background-size: cover
+      .errorBorder
+        border-bottom:1px solid $color-meta
+      .sendauthcode
+        font-size:0.24rem
+        width:2.9rem
+        background:$color-meta
+        color:#fff
+        height 0.7rem
+        display:flex
+        align-items:center
+        justify-content:center
+        text-align:center
+        border-radius:0.1rem
+        word-wrap:break-word
+      .activeAuthButton
+        background:#ccc
+        width:2.9rem
+        word-wrap:break-word
+      .autosuffix
+        position:absolute
+        width:100%
+        // height:3rem
+        background:#fff
+        top:0rem
+        z-index 1000
+        left:0
+        .email_list>li
+          height:0.8rem
+          line-height:0.8rem
     .password
       font-size:0.3rem
-      height:1.34rem
+      height:1rem
       display:flex
       align-items:flex-end
       justify-content:space-between
@@ -429,5 +698,11 @@
       margin-top:0.25rem
     .activeBtn
       background:$color-meta 
+    .seguridad
+      font-size:0.24rem
+      margin-top:0.3rem
+      text-align:center
+      line-height:0.3rem
+      color:#999
 </style>
 

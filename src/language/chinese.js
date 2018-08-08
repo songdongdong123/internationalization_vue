@@ -356,11 +356,31 @@ export default {
     checkout: '查看'
   },
   payform: {
+    payNums: '金币数量',
+    inputgoldNums: '输入金币数量',
+    payrlues: '1比索=1金币，最低充值50比索',
     payGold: '金币充值',
     choosenum: '选择数量',
     payway: '支付方式',
     choosepayway: '选择支付方式',
     visaorbankcard: '信用卡或借记卡',
+    paywaylist: [{
+      id: 2,
+      name: '信用卡',
+      way: 'Visa、Maste、American express'
+    }, {
+      id: 3,
+      name: '借记卡',
+      way: 'Banamex、Santander、HSBC...'
+    }, {
+      id: 4,
+      name: '便利店',
+      way: '7-Eleven、K、Extra、Kiosko、One...'
+    }, {
+      id: 5,
+      name: '银行转账',
+      way: 'BBVA'
+    }],
     pago: '付款',
     cardnum: '卡号',
     cardnam: '姓名',
@@ -386,7 +406,10 @@ export default {
     shortofGold: '金币不足',
     account: '账户余额',
     payBtnText: '充值金币',
-    disposePage: '订单处理'
+    disposePage: '订单处理',
+    paycustom: '自定义充值金额',
+    userNotice: ['每件商品均有一名幸运者可以获得.购买份数越多，获奖概率就越大，但仍有不中奖的风险。请谨慎购买。', '金币购买后不可提现。', '金币主要用于参与夺宝。', '如有疑问请发邮件给我们。'],
+    noticeTitle: '充值须知'
   },
   newLogin: {
     creatAccount: '创建邮箱账户',
@@ -405,5 +428,9 @@ export default {
   supplement: {
     rlusMeta: '使用条款',
     rlusAcepto: '我已阅读并同意网站'
+  },
+  networkState: {
+    breakNetWork: '网络中断，请检查您的网络设置...',
+    reload: '刷新'
   }
 }

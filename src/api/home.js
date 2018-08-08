@@ -10,9 +10,28 @@ const getFistRollPic = params => axios.post('/index.php/address/getFistRollPic',
 // 获取首页销量
 const getTotalSaleNum = params => axios.post('/index.php/statistics/api/getTotalSaleNum', params)
 
+// 获取首页中奖消息列表
+const queryLastOpenIssueInfo = params => axios.post('/index.php/snatch/queryLastOpenIssueInfo', params)
+
+const getGoodsClassify = params => axios.post('/index.php/snatch/getGoodsClassify', params)
+
+// 获取文章详情
+const getArticleInfo = params => axios.post('/index.php/address/getArticleInfo', params)
+
+// 获取我的邀请码
+const getMyInviteInfo = params => axios.post('/index.php/pay/getMyInviteInfo', params)
+
+// 获取活动列表
+const getActivityList = params => axios.post('/index.php/activity/getActivityList', params)
+
 export {
   getIssueList,
   getIssueDetail,
   getFistRollPic,
-  getTotalSaleNum
+  getTotalSaleNum,
+  queryLastOpenIssueInfo,
+  getGoodsClassify,
+  getArticleInfo,
+  getMyInviteInfo,
+  getActivityList
 }

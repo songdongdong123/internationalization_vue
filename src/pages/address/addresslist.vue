@@ -6,20 +6,17 @@
       :id="addressId"
       @splicelist="splicelist"
       v-show="submitbox"></submitbox>
-    <!-- <div class="title">
-      <span class="left" @click="backUserCenter">left</span>
-      <p class="center">1 pesos for treasure</p>
-      <span class="addNew" @click="toUseraddress">+</span>
-    </div> -->
     <div class="title">
-      <p class="left" @click="backUserCenter">
-        <span class="icon-fanhui1"></span>
-      </p>
-      <!-- 地址管理 -->
-      <p class="center">{{$t('addresslist.addressManage')}}</p>
-      <p class="right">
-        <span class="icon-jiahao" @click="toUseraddress"></span>
-      </p>
+      <div class="titlecontainer">
+        <p class="left" @click="backUserCenter">
+          <span class="icon-fanhui1"></span>
+        </p>
+        <!-- 地址管理 -->
+        <p class="center">{{$t('addresslist.addressManage')}}</p>
+        <p class="right">
+          <span class="icon-jiahao" @click="toUseraddress"></span>
+        </p>
+      </div>
     </div>
     <div class="addlist" v-if="addlist">
       <scroll
@@ -72,7 +69,9 @@
         ind: 0,
         backText: this.$t('addresslist.backText[0]'), // 个人中心
         addressId: '',
-        defaultAddress: {}
+        defaultAddress: {},
+        channelType: '',
+        channelTag: ''
       }
     },
     computed: {
@@ -83,6 +82,7 @@
       if (this.$route.query.source === 'addressorder') {
         this.backText = this.$t('addresslist.backText[1]') // 确认收货地址
       }
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
     },
     methods: {
       _deleteUserAddress (id) {
@@ -98,11 +98,11 @@
         if (this.$route.query.source === 'addressorder') {
           this.$router.back()
         } else {
-          this.$router.push('/usercenter/' + this.$i18n.locale)
+          this.$router.push({path: '/usercenter/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
         }
       },
       toUseraddress () {
-        this.$router.push({path: '/useraddress/' + this.$i18n.locale, query: {falg: 'addreelist'}})
+        this.$router.push({path: '/useraddress/' + this.$i18n.locale, query: {falg: 'addreelist', channelType: this.channelType, channelTag: this.channelTag}})
       },
       _getUserAddressList () {
         // 获取地址列表
@@ -147,7 +147,6 @@
         })
       },
       toEditAddress (index, list) {
-        console.log(list.id)
         this.$router.push({path: '/useraddress/' + this.$i18n.locale,
           query: {
             name: list.address.name,
@@ -160,7 +159,9 @@
             referenceInfo: list.address.referenceInfo,
             falg: 'addreelist',
             index: index,
-            id: list.id
+            id: list.id,
+            channelType: this.channelType,
+            channelTag: this.channelTag
           }})
       },
       ...mapMutations({
@@ -187,32 +188,34 @@
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
       border-bottom:1px solid $color-border
-      .left
-        position:absolute
-        left:0
-        font-size:0
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        font-size:0.4rem
-        color:$color-meta
-      .center
-        width:100%
-        text-align:center
-      .right
-        position:absolute
-        right:0
-        font-size:0
-        padding:0.175rem 0.25rem 0.175rem 0.3rem
-        font-size:0.4rem
-        color:$color-meta
+      .titlecontainer
+        display:flex
+        align-items:center
+        margin:auto 0.32rem
+        .left
+          position:absolute
+          left:0
+          font-size:0
+          padding:0rem 0.3rem 0 0.25rem
+          font-size:0.4rem
+          color:$color-meta
+        .center
+          width:100%
+          text-align:center
+        .right
+          position:absolute
+          right:0
+          font-size:0
+          padding:0 0.25rem 0 0.3rem
+          font-size:0.4rem
+          color:$color-meta
     .mask
       position:fixed
       width:100%

@@ -1,5 +1,13 @@
 export default {
   install (Vue, options) {
+    Vue.prototype.$BUY_CATEGORY = {
+      // navbar: {
+
+      // },
+      // recommend: {
+
+      // }
+    }
     Vue.prototype.$ERR_CODE = 0
     Vue.prototype.$RET_CODE = 0
     Vue.prototype.$forMatTime = (time, mode) => {

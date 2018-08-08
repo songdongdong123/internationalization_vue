@@ -35,12 +35,17 @@
         default: 1
       },
       part: {
-        type: String,
-        default: ''
+        type: Number,
+        default: null
       }
     },
     data () {
-      return {}
+      return {
+        channelType: ''
+      }
+    },
+    created () {
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
     },
     methods: {
       closeThis () {
@@ -48,15 +53,15 @@
           this.setSuccessPage(false)
         } else if (this.falg === 2) {
           this.setSuccessPage(false)
-          this.$router.push({path: '/userrecord/' + this.$i18n.locale})
+          this.$router.push({path: '/userrecord/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
         }
       },
       toRecordlist () {
         // this.setSuccessPage(false)
         if (this.falg === 1) {
-          this.$router.push({path: '/recordlist/' + this.$i18n.locale, query: {type: 2}})
+          this.$router.push({path: '/recordlist/' + this.$i18n.locale, query: {type: 2, channelType: this.channelType, channelTag: this.channelTag}})
         } else {
-          this.$router.push({path: '/winnershow/' + this.$i18n.locale, query: {type: 1}})
+          this.$router.push({path: '/winnershow/' + this.$i18n.locale, query: {type: 1, channelType: this.channelType, channelTag: this.channelTag}})
         }
       },
       ...mapMutations({

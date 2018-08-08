@@ -2,9 +2,11 @@
 <transition name="slide">
   <div class="payrecord">
     <div class="title">
-      <span @click="backUserCenter" class="left icon-fanhui1"></span>
-      <!-- 充值记录 -->
-      <p>{{$t('payrecord.payrecord')}}</p>
+      <div class="titlecontainer">
+        <span @click="backUserCenter" class="left icon-fanhui1"></span>
+        <!-- 充值记录 -->
+        <p>Tus Recargas</p>
+      </div>
     </div>
     <scroll
       :data="dealList"
@@ -17,13 +19,13 @@
           <li class="item" v-for="list in dealList">
             <div class="left">
               <!-- 订单号 -->
-              <p class="top">{{$t('payrecord.orderNo')}}</p>
-              <p class="bottom">NO:{{list.orderId}}</p>
+              <p class="top">{{list.name}} Boletos <span class="presentAmount" v-show="list.presentAmount">Regalo {{list.presentAmount}}</span></p>
+              <p class="bottom">{{list.tradeTime}}</p>
             </div>
             <div class="right">
               <!-- 金币 -->
-              <p class="top">{{list.money}}</p>
-              <p class="bottom">{{list.tradeTime}}</p>
+              <p class="top">+ {{list.money}} Boletos</p>
+              <!-- <p class="bottom">{{list.tradeTime}}</p> -->
             </div>
           </li>
         <div class="loading" v-if="loading">
@@ -51,16 +53,18 @@
         tempList: [],
         page: 0,
         loading: false,
-        pageCount: 0
+        pageCount: 0,
+        channelType: ''
       }
     },
     created () {
       // this.$loading('open')
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
       this._getRechargeRecordList({})
     },
     methods: {
       backUserCenter () {
-        this.$router.push('/usercenter/' + this.$i18n.locale)
+        this.$router.push({path: '/usercenter/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
         // this.$router.back()
       },
       scrollDowns () {
@@ -114,28 +118,30 @@
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
       border-bottom:1px solid $color-border
-      .left
-        position:absolute
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        left:0
-        font-size:0.4rem
-        color:$color-meta
-      p
-        text-align:center
-        width:100%
+      .titlecontainer
+        display:flex
+        justify-content:space-between
+        align-items:center
+        margin:auto 0.32rem
+        .left
+          position:absolute
+          padding:0 0.3rem 0 0.25rem
+          left:0
+          font-size:0.4rem
+          color:$color-meta
+        p
+          text-align:center
+          width:100%
     .paylist
-      padding-top:0.9rem
-      height:10.5rem
+      margin-top:0.9rem
+      height:9rem
       .list
         background-color:#fff
         .item
@@ -148,10 +154,13 @@
           .right
             text-align:right
             .top
-              font-size:0.24rem
+              font-size:0.3rem
+              color:$color-yellow
           .left
             .top
-              font-size:0.24rem
+              font-size:0.3rem
+              .presentAmount
+                color:#FF9933
             .bottom
               font-size:0.24rem
     .nolist

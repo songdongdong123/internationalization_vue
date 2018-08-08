@@ -1,9 +1,11 @@
 <template>
   <div class="snatchno">
     <div class="title">
-      <span @click="backUserCenter" class="left icon-fanhui1"></span>
-      <!-- 我的夺宝号 -->
-      <p>{{$t('snatchno.mySnatch')}}</p>
+      <div class="titlecontainer">
+        <span @click="backUserCenter" class="left icon-fanhui1"></span>
+        <!-- 我的夺宝号 -->
+        <p>{{$t('snatchno.mySnatch')}}</p>
+      </div>
     </div>
     <div class="mynumber">
       <scroll
@@ -14,18 +16,18 @@
         <div class="content">
           <div class="goodsMsg">
             <!-- 商品 -->
-            <p class="label">{{$t('snatchno.productLabel')}}</p>
+            <p class="label">Producto</p>
             <p class="labelMsg">
-              <span>{{goodsName}}</span>
+              <span class="labelMsgpro">{{goodsName}}</span>
               <span>{{$t('snatchno.issueNo')}}：{{issueNo}}</span>
             </p>
           </div>
           <div class="goodsMsg">
-            <p class="label">{{$t('snatchno.participationNum')}}/{{$t('snatchno.amount')}}</p>
+            <p class="label">Tus Boletos/Total</p>
             <p class="labelMsg">{{currentBuy}}/{{totalBuy}}</p>
           </div>
           <div class="numberContent">
-            <p class="label">{{$t('snatchno.mySnatch')}}</p>
+            <p class="label">Folios de tus Boletos</p>
             <p class="cotainer"> 
               <span v-for="list in numberList">{{list}}</span>
               <span></span>
@@ -62,10 +64,12 @@
         metaText: '',
         currentNumbers: 0,
         currentBuy: '',
-        totalBuy: ''
+        totalBuy: '',
+        channelType: ''
       }
     },
     created () {
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
       this.issueNo = this.$route.query.issueNo
       this._getUserIgouNumberList(this.$route.query.issueNo)
       this._getIssueSampleInfo(this.$route.query.issueNo)
@@ -80,7 +84,7 @@
     methods: {
       backUserCenter () {
         if (this.$route.query.pro === 'pro') {
-          this.$router.push({path: '/productdetail/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo}})
+          this.$router.push({path: '/productdetail/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, channelType: this.channelType, channelTag: this.channelTag}})
         } else {
           // this.$router.push('/recordlist/' + this.$i18n.locale)
           this.$router.back()
@@ -129,25 +133,27 @@
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
       border-bottom:1px solid $color-border
-      .left
-        position:absolute
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        left:0
-        font-size:0.4rem
-        color:$color-meta
-      p
-        text-align:center
-        width:100%
+      .titlecontainer
+        display:flex
+        justify-content:space-between
+        align-items:center
+        margin:auto 0.32rem
+        .left
+          position:absolute
+          padding:0 0.3rem 0 0.25rem
+          left:0
+          font-size:0.4rem
+          color:$color-meta
+        p
+          text-align:center
+          width:100%
     .mynumber
       padding-top:0.9rem
       .numberC
@@ -166,6 +172,11 @@
               justify-content:space-between
               margin-top:0.3rem
               color:$color-weaken-font
+              .labelMsgpro
+                width:50%
+                overflow: hidden
+                text-overflow:ellipsis
+                white-space: nowrap
           .numberContent
             background:#fff
             margin-top:0.2rem

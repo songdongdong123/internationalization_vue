@@ -9,6 +9,13 @@ const listenScroll = state => state.listenScroll
 const shortofgold = state => state.shortofgold
 const sendsuccess = state => state.sendsuccess
 const siginsuccess = state => state.siginsuccess
+const createUserMsg = state => state.createUserMsg
+const proIssueNo = state => state.proIssueNo
+const homescrollY = state => state.homescrollY
+const paymoney = state => state.paymoney
+const clectstate = state => state.clectstate
+const getnavmsg = state => state.navmsg
+const downloadstate = state => state.downloadstate
 
 export {
   loginState,
@@ -20,5 +27,12 @@ export {
   listenScroll,
   shortofgold,
   sendsuccess,
-  siginsuccess
+  siginsuccess,
+  createUserMsg,
+  proIssueNo,
+  homescrollY,
+  paymoney,
+  clectstate,
+  getnavmsg,
+  downloadstate
 }

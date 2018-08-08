@@ -8,13 +8,11 @@
       @updata="updata"
       v-show="submitbox"></submitbox>
       <!-- 中奖记录 -->
-    <!-- <div class="title">
-      <span class="icon-fanhui left" @click="backUserCenter"></span>
-      <p class="meta">{{$t('userRecord.prizeRecord')}}</p>
-    </div> -->
     <div class="title">
-      <span @click="backUserCenter" class="left icon-fanhui1"></span>
-      <p>{{$t('userRecord.prizeRecord')}}</p>
+      <div class="titlecontainer">
+        <span @click="backUserCenter" class="left icon-fanhui1"></span>
+        <p>Tus Premios</p>
+      </div>
     </div>
     <div class="usercard">
       <img src="./img/banner.jpg" alt="">
@@ -41,11 +39,11 @@
                 <!-- 参与期号 -->
                 <p class="base weaken">{{$t('userRecord.partakeIssue')}}:{{list.issueNo}}</p>
                 <!-- 幸运号码 -->
-                <p class="base weaken">{{$t('userRecord.Fortuna')}}:{{list.luckyNumber}}</p>
+                <!-- <p class="base weaken">{{$t('userRecord.Fortuna')}}:{{list.luckyNumber}}</p> -->
                 <!-- 时间 -->
                 <p class="base weaken">{{$t('userRecord.winnerTime')}}:{{list.time}}</p>
               </div>
-              <div class="stateMsg">
+              <div class="stateMsg" v-if="!list.cardNo">
                 <div class="stateMsg_left">
                      <!-- 确认收货地址 -->
                   <span v-if="list.sendGoodsState === 1" class="btn" @click="toSubmitAddress(list)">{{$t('userRecord.ConfirmReceiptAddress')}}</span>
@@ -59,6 +57,10 @@
                   @click="toShareOrderPage(list.orderNo, list.goodName, list.thumbImage)">
                   <p>{{$t('userRecord.shareImg')}}</p>
                 </div>
+              </div>
+              <div class="card_no" v-else>
+                <p class="card-title">Code or PIN:</p>
+                <p>{{list.cardNo}}</p>
               </div>
             </div>
           </li>
@@ -88,13 +90,15 @@
         loading: false,
         pageCount: 0,
         orderNo: '',
-        orderIncrId: 0
+        orderIncrId: 0,
+        channelType: ''
       }
     },
     computed: {
       ...mapGetters(['submitbox'])
     },
     created () {
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
       this._queryUserIgouDealList({})
       this.nickName = this.$route.query.nickName
       this.userName = this.$route.query.userName
@@ -102,14 +106,14 @@
     methods: {
       toShareOrderPage (orderNo, goodsName, thumbImage) {
         // 进入晒单页面
-        this.$router.push({path: '/shareorder/' + this.$i18n.locale, query: {orderNo: orderNo, goodsName: goodsName, thumbImage: thumbImage}})
+        this.$router.push({path: '/shareorder/' + this.$i18n.locale, query: {orderNo: orderNo, goodsName: goodsName, thumbImage: thumbImage, channelType: this.channelType, channelTag: this.channelTag}})
       },
       backUserCenter () {
         // this.$router.push('/usercenter/' + this.$i18n.locale)
         if (this.$route.query.issueNo) {
           this.$router.back()
         } else {
-          this.$router.push('/usercenter/' + this.$i18n.locale)
+          this.$router.push({path: '/usercenter/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
         }
       },
       toReceiving (currentlist) {
@@ -179,7 +183,9 @@
             thumbImage: list.thumbImage,
             orderIncrId: list.orderIncrId,
             orderNo: list.orderNo,
-            issueNo: this.$route.query.issueNo
+            issueNo: this.$route.query.issueNo,
+            channelType: this.channelType,
+            channelTag: this.channelTag
           }})
       },
       ...mapMutations({
@@ -213,25 +219,27 @@
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:1001
       border-bottom:1px solid $color-border
-      .left
-        position:absolute
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        left:0
-        font-size:0.4rem
-        color:$color-meta
-      p
-        text-align:center
-        width:100%
+      .titlecontainer
+        display:flex
+        justify-content:space-between
+        align-items:center
+        margin:auto 0.32rem
+        .left
+          position:absolute
+          padding:0rem 0.3rem 0rem 0.25rem
+          left:0
+          font-size:0.4rem
+          color:$color-meta
+        p
+          text-align:center
+          width:100%
     .usercard
       height:1.5rem
       padding-top:0.9rem
@@ -286,6 +294,16 @@
                 .delivery
                   color:$color-weaken-font
                   margin-right:0.1rem
+            .card_no
+              font-size:0.3rem
+              height:1rem
+              background:#f5f5f5
+              line-height:0.4rem
+              padding-left:0.2rem
+              color:#333
+              .card-title
+                font-size:0.24rem
+                padding-top:0.1rem
             .stateMsg_right
               color:$color-sky-blue
               position:absolute

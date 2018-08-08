@@ -2,7 +2,7 @@
 <transition name="fade">
   <div class="bigimg" v-show="state" @click.capture="hideThis($event)">
     <div class="swipe">
-      <mt-swipe :auto="0" :showIndicators="false" @change="handleChange">
+      <mt-swipe :auto="0" :showIndicators="false" @change="handleChange" :defaultIndex="detaultimg">
         <mt-swipe-item v-for="(list, index) in piclist" :key="index">
           <div class="imgbox">
             <img class="showimg" :src="list" alt="">
@@ -25,6 +25,10 @@
       piclist: {
         type: Array,
         default: null
+      },
+      detaultimg: {
+        type: Number,
+        default: 0
       }
     },
     data () {
@@ -32,13 +36,6 @@
         ind: 1
       }
     },
-    // watch: {
-    //   state: {
-    //     if (oldV, newV) {
-    //       console.log(oldV, newV)
-    //     }
-    //   }
-    // },
     methods: {
       handleChange (index) {
         this.ind = index + 1
@@ -63,7 +60,7 @@
     width:100%
     top:0
     background:#000
-    z-index:1000
+    z-index:2000
     display:flex
     align-items:center
     .swipe

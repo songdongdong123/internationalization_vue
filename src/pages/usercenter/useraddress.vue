@@ -2,14 +2,16 @@
 <transition name="slide">
   <div class="useraddress">
     <div class="title">
-      <p class="left" @click="backUserCenter">
-        <span class="icon-fanhui1"></span>
-      </p>
-      <!-- 地址管理 -->
-      <p class="center">{{$t('userAddress.ipam')}}</p>
-      <p class="right">
-        <span  @click="_changeUserAddress">{{$t('userAddress.submit')}}</span>
-      </p>
+      <div class="titlecontainer">
+        <p class="left" @click="backUserCenter">
+          <span class="icon-fanhui1"></span>
+        </p>
+        <!-- 地址管理 -->
+        <p class="center">{{$t('userAddress.ipam')}}</p>
+        <p class="right">
+          <span  @click="_changeUserAddress">{{$t('userAddress.submit')}}</span>
+        </p>
+      </div>
     </div>
     <div class="address_container">
       <div class="address">
@@ -19,13 +21,13 @@
         </div>
         <div class="name bottom" :class="{'bottomActive':bomAvtiveClass, 'bottomActive2': !topAvtiveClass&&bomAvtiveClass}">
           <!-- 电话 -->
-          <input type="text" :placeholder="$t('userAddress.placeholders[2]')" v-model="phoneNumber">
+          <input type="tel" :placeholder="$t('userAddress.placeholders[2]')" v-model="phoneNumber">
         </div>
       </div>
       <div class="postCode">
         <div class="postC left" :class="{'leftActive':postClass}">
           <!-- 邮编 -->
-          <input type="text" :placeholder="$t('userAddress.placeholders[3]')" v-model="postcode">
+          <input type="tel" :placeholder="$t('userAddress.placeholders[3]')" v-model="postcode">
         </div>
         <div class="postC" @click="_getPostCodeInfo">
           <!-- 验证邮编 -->
@@ -45,27 +47,30 @@
       </transition>
       <div class="addressDetail">
         <div class="base top" :class="{'topAvtive':detailClass}">
-          <input type="text" :placeholder="$t('userAddress.placeholders[1]')" v-model="detailAddress">
+          <input type="text" placeholder="Calle y Número" v-model="detailAddress">
         </div>
         <div class="base bottom" >
-          <input type="text" :placeholder="$t('userAddress.placeholders[5]')" v-model="reference">
+          <input type="text" placeholder="Referencias (Opcional)" v-model="reference">
         </div>
       </div>
     </div>
     <transition name="fade">
+      <!-- v-show="moreList" -->
       <div class="mask" v-show="moreList">
-        <scroll 
-          :listenScroll="true"
-          :data="arealist"
-          class="listContainer"
-        >
-          <div class="content">
-            <p class="closeTitle" @click="closeMoreList">x</p>
-            <ul class="list">
-              <li class="item" v-for="list in arealist" @click="chooseOneLocal(list)">{{list}}</li>
-            </ul>
-          </div>
-        </scroll>
+        <div class="containermask">
+          <p class="closeTitle" @click="closeMoreList"><span class="icon"></span></p>
+          <scroll 
+            :listenScroll="true"
+            :data="arealist"
+            class="listContainer"
+          >
+            <div class="content">
+              <ul class="list">
+                <li class="item" v-for="list in arealist" @click="chooseOneLocal(list)">{{list}}</li>
+              </ul>
+            </div>
+          </scroll>
+        </div>
       </div>
     </transition>
   </div>
@@ -291,6 +296,7 @@
   @import "../../common/stylus/colorreset"
   @import "../../common/stylus/fontsize"
   @import "../../common/stylus/marginAndsize"
+  @import "../../common/stylus/mixin"
   .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
   }
@@ -319,55 +325,80 @@
       z-index:1010
       display:flex
       align-items:center
-      .listContainer
-        height:5rem
-        width:5.5rem
-        margin:0 auto
-        background:#fff
-        .content
-          .closeTitle
-            text-align:right
-            font-size:0.4rem
-            height:0.6rem
-            background:#f5f5f5
-            padding-right:0.2rem
-            line-height:0.6rem
-          .list
-            font-size:0.3rem
-            .item
-              height:0.6rem
-              line-height:0.6rem
-              text-align:center
-              border-bottom:1px solid #f5f5f5
+      justify-content:center
+      .containermask
+        position: relative
+        .closeTitle
+          text-align:right
+          font-size:0.4rem
+          height:0.8rem
+          background:$color-meta
+          padding-right:0.25rem
+          line-height:0.8rem
+          border-top-left-radius:0.1rem;
+          border-top-right-radius:0.1rem;
+          // opacity:0.5
+          .icon
+            display:inline-block
+            width:0.30rem
+            height:0.30rem
+            background-size: cover
+            bg-image('img/white')
+        .listContainer
+          border-radius:0.1rem
+          border-top-left-radius:0
+          border-top-right-radius:0
+          max-height:5.6rem
+          max-width:7rem
+          min-width:5.5rem
+          padding:0 0.3rem
+          overflow: hidden
+          text-overflow:ellipsis
+          white-space: nowrap
+          margin:0 auto
+          background:#fff
+          overflow: hidden
+          .content
+            .list
+              font-size:0.25rem
+              .item
+                height:0.8rem
+                line-height:0.8rem
+                text-align:center
+                color:$color-meta
+            .list>li:not(:last-child)
+              border-bottom:1px solid $color-border
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
       border-bottom:1px solid $color-border
-      .left
-        position:absolute
-        left:0
-        font-size:0
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        font-size:0.4rem
-        color:$color-meta
-      .center
-        width:100%
-        text-align:center
-      .right
-        position:absolute
-        right:0
-        font-size:0
-        padding:0.175rem 0.32rem 0.175rem 0.32rem
-        font-size:0.3rem
-        color:$color-meta
+      .titlecontainer
+        display:flex
+        align-items:center
+        margin:auto 0.32rem
+        .left
+          position:absolute
+          left:0
+          font-size:0
+          padding:0 0.3rem 0 0.25rem
+          font-size:0.4rem
+          color:$color-meta
+        .center
+          width:100%
+          text-align:center
+        .right
+          position:absolute
+          right:0
+          font-size:0
+          padding:0 0.32rem 0 0.32rem
+          font-size:0.3rem
+          color:$color-meta
     .address_container
       padding-top:0.9rem
       padding-bottom:0.3rem

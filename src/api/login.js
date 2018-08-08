@@ -19,6 +19,11 @@ const sendLinkToEmail = params => axios.post('/index.php/account/sendLinkToEmail
 
 // 邮箱发送激活重置密码
 const changePasswordByEmail = params => axios.post('/index.php/account/changePasswordByEmail', params)
+
+const sendAuthCode = params => axios.post('/index.php/common/sendAuthCode', params)
+
+// faecbook登录
+const unionFacebookLogin = params => axios.post('/index.php/account/unionFacebookLogin', params)
 export {
   loginIn,
   getLoginSecret,
@@ -27,5 +32,7 @@ export {
   unionLogin,
   recordDeviceInfo,
   sendLinkToEmail,
-  changePasswordByEmail
+  changePasswordByEmail,
+  sendAuthCode,
+  unionFacebookLogin
 }

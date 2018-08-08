@@ -1,8 +1,10 @@
 <template>
   <div class="participator">
     <div class="title">
-      <span @click="backTo" class="left icon-fanhui1"></span>
-      <p>{{$t('product.participator')}}</p>
+      <div class="titlecontainer">
+        <span @click="backTo" class="left icon-fanhui1"></span>
+        <p>{{$t('product.participator')}}</p>
+      </div>
     </div>
     <scroll
       :listenScroll="true"
@@ -105,19 +107,20 @@
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
       border-bottom:1px solid $color-border
+      .titlecontainer
+        display:flex
+        justify-content:space-between
+        align-items:center
       .left
         position:absolute
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
+        padding:0rem 0.3rem 0 0.25rem
         left:0
         font-size:0.4rem
         color:$color-meta
@@ -135,7 +138,7 @@
           display:flex
           padding:0 0.32rem
           .participator_msg
-            width:6.86rem
+            width:100%
             border-bottom:1px solid $color-border
             display:flex
             justify-content:space-between

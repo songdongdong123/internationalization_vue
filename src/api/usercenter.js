@@ -3,7 +3,7 @@ import * as axios from '../common/js/axios.js'
 // 参与记录列表
 const queryUserIgouDealList = params => axios.post('/index.php/deal/queryUserIgouDealList', params)
 // 获取用户充值记录列表
-const getRechargeRecordList = params => axios.post('/index.php/account/getRechargeRecordList', params)
+const getRechargeRecordList = params => axios.post('/index.php/account/getCoinRecordList', params)
 // 获取用户信息
 const getSimpleUserInfo = params => axios.post('/index.php/account/getSimpleUserInfo', params)
 // 添加地址
@@ -20,6 +20,8 @@ const getGoodsPicDetails = params => axios.post('/index.php/goods/getGoodsPicDet
 const getPostCodeInfo = params => axios.post('/index.php/address/getPostCodeInfo', params)
 // 获取所有其次获奖者
 const queryAllWinner = params => axios.post('/index.php/snatch/queryAllWinner', params)
+// 获取当天中奖者信息
+const getTodayOpenInfo = params => axios.post('/index.php/statistics/api/getTodayOpenInfo', params)
 export {
   queryUserIgouDealList,
   getRechargeRecordList,
@@ -30,5 +32,6 @@ export {
   getGoodsPicDetails,
   deleteUserAddress,
   getPostCodeInfo,
-  queryAllWinner
+  queryAllWinner,
+  getTodayOpenInfo
 }

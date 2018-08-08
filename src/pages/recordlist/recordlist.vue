@@ -1,9 +1,11 @@
 <template>
   <div class="recordlist">
     <div class="title">
-      <span @click="backUserCenter" class="left icon-fanhui1"></span>
-      <!-- 夺宝记录 -->
-      <p>{{$t('recordList.recordListText')}}</p>
+      <div class="titlecontainer">
+        <span @click="backUserCenter" class="left icon-fanhui1"></span>
+        <!-- 夺宝记录 -->
+        <p>Historial</p>
+      </div>
     </div>
     <div class="navlist">
       <ul class="list">
@@ -35,9 +37,11 @@
                 <!-- 期号 -->
                 <p class="weaken">{{$t('recordList.issueNo')}}:{{list.issueNo}}</p>
                 <!-- 夺宝时间 -->
-                <p class="weaken">{{$t('recordList.snatchTime')}}:{{list.time}}</p>
+                <p class="weaken">Fecha:{{list.time}}</p>
                 <!-- 份数 -->
-                <p class="weaken weakenNumber" @click="toSnatchon(list.issueNo)">{{$t('recordList.copies')}}:<span>{{list.buyNum}}</span></p>
+                <p class="weaken weakenNumber" @click="toSnatchon(list.issueNo)">{{$t('recordList.copies')}} : <span>{{list.buyNum}}</span> <span>Boletos</span></p>
+                <!-- 不中退 -->
+                <p class="reembolsa" v-show="list.activityType === 4">No lo gana, se la reembolsa</p>
               </div>
               <div class="prostate"
                 :class="{'nowingState': list.state === 1 || 2, 'announceState': list.state === 3, 'cancelState': list.state===5}">
@@ -82,11 +86,13 @@
         page: 0,
         loading: false,
         pageCount: 0,
-        stateText: ''
+        stateText: '',
+        channelType: ''
       }
     },
     created () {
       // this.$i18n.locale = this.$route.params.lang === 'zh' ? 'zh' : 'en'
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
       this._getAllIgouDealList({})
       // this.$loading()
       this.setSuccessPage(false)
@@ -100,24 +106,19 @@
         this._getAllIgouDealList({page: 0, pageSize: 10, tag: this.ind})
       },
       backUserCenter () {
-        this.$router.push('/usercenter/' + this.$i18n.locale)
-        // if (this.$route.query.type !== 2) {
-        //   this.$router.back()
-        // } else {
-        //   this.$router.push({path: '/usercenter/' + this.$i18n.locale})
-        // }
+        this.$router.push({path: '/usercenter/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       },
       toProductDetail (issueNo, activityType) {
         // 前往商品详情
         if (activityType === 0) {
-          this.$router.push({path: '/productdetail/' + this.$i18n.locale, query: {issueNo: issueNo, pro: 'record'}})
+          this.$router.push({path: '/productdetail/' + this.$i18n.locale, query: {issueNo: issueNo, pro: 'record', channelType: this.channelType, channelTag: this.channelTag}})
         } else {
-          this.$router.push({path: '/freeproduct/' + this.$i18n.locale, query: {issueNo: issueNo, freestate: 1, pro: 'record'}})
+          this.$router.push({path: '/freeproduct/' + this.$i18n.locale, query: {issueNo: issueNo, freestate: 1, pro: 'record', channelType: this.channelType, channelTag: this.channelTag}})
         }
       },
       toSnatchon (issueNo) {
         // 前往我的夺宝号
-        this.$router.push({path: '/snatchno/' + this.$i18n.locale, query: {issueNo: issueNo}})
+        this.$router.push({path: '/snatchno/' + this.$i18n.locale, query: {issueNo: issueNo, channelType: this.channelType, channelTag: this.channelTag}})
       },
       _getAllIgouDealList ({page = 0, pageSize = 10, tag = this.ind}) {
         this.loading = true
@@ -183,30 +184,33 @@
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:1001
       border-bottom:1px solid $color-border
-      .left
-        position:absolute
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        left:0
-        font-size:0.4rem
-        color:$color-meta
-      p
-        text-align:center
-        width:100%
+      .titlecontainer
+        display:flex
+        justify-content:space-between
+        align-items:center
+        margin:auto 0.32rem
+        .left
+          position:absolute
+          padding:0 0.3rem 0 0.25rem
+          left:0
+          font-size:0.4rem
+          color:$color-meta
+        p
+          text-align:center
+          width:100%
     .navlist
       z-index:1000
       position:fixed
       padding-top:$meta-height
       background:#fff
+      width:100%
       .list
         display:flex
         font-size:0.3rem
@@ -261,6 +265,8 @@
                 .weakenNumber
                   span
                     color:$color-sky-blue
+                .reembolsa
+                  color:#ff8000
               .prostate
                 p
                   // padding:0rem 0.2rem 0 0.2rem

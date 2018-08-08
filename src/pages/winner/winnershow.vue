@@ -6,9 +6,11 @@
       @hideBigImg="hideBigImg"
     ></bigimg>
     <div class="title">
-      <span @click="backHome" class="left icon-fanhui1"></span>
-      <!-- 晒单分享 -->
-      <p>{{$t('winnershowe.meta')}}</p>
+      <div class="titlecontainer">
+        <span @click="backHome" class="left icon-fanhui1"></span>
+        <!-- 晒单分享 -->
+        <p>{{$t('winnershowe.meta')}}</p>
+      </div>
     </div>
     <div class="container">
       <scroll
@@ -22,18 +24,18 @@
           <div class="loading">
             <loading v-show="loading2"></loading>
           </div>
-          <div class="share">
+          <!-- <div class="share">
             <p>{{$t('winnershowe.share')}}({{pageCount}})</p>
-          </div>
+          </div> -->
           <ul class="sharelist">
             <li class="shareitem" v-for="list in dealList">
               <div class="shareitem">
                 <div class="user">
                   <div class="left">
                     <!-- <img v-lazy="list.userPic" alt=""> -->
-                    <span>{{list.nickName}}</span>
+                    <span>{{list.nickName}} </span>
                   </div>
-                  <p>{{list.time}}</p>
+                  <p class="toptime">{{list.time}} {{list.goodsName}}</p>
                 </div>
                 <p class="comment">{{list.remark}}</p>
                 <div class="imglist" @click="showBigImg(list.userRemarkPic)">
@@ -41,14 +43,14 @@
                     <img v-lazy="item" alt="">
                   </div>
                 </div>
-                <p class="goodsname">{{list.goodsName}}</p>
+                <!-- <p class="goodsname">{{list.goodsName}}</p> -->
               </div>
             </li>
           </ul>
           <loading v-if="loading"></loading>
-          <div class="desc" v-else>
+          <!-- <div class="desc" v-else>
             <p>{{$t('winnershowe.toast')}}</p>
-          </div>
+          </div> -->
         </div>
       </scroll>
     </div>
@@ -73,10 +75,13 @@
         pageCount: 0,
         tempList: [],
         dealList: [],
-        picList: []
+        picList: [],
+        channelType: '',
+        channelTag: ''
       }
     },
     created () {
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
       if (Number(this.$route.query.type) === 0) {
         this.getQueryShowDeal({})
       } else {
@@ -135,7 +140,7 @@
         if (this.$route.query.type !== 1) {
           this.$router.back()
         } else {
-          this.$router.push({path: '/userrecord/' + this.$i18n.locale})
+          this.$router.push({path: '/userrecord/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
         }
       },
       ...mapMutations({
@@ -166,18 +171,20 @@
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
+      .titlecontainer
+        display:flex
+        justify-content:space-between
+        align-items:center
+        margin:auto 0.32rem
       .left
         position:absolute
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
+        padding:0 0.3rem 0 0.25rem
         left:0
         font-size:0.4rem
         color:$color-meta
@@ -197,27 +204,30 @@
             border-top:1px solid $color-border
             padding: 0 0.32rem 0 0.32rem
           .sharelist
+            padding-bottom:0.3rem
             .shareitem
-              min-height:3.5rem
+              // min-height:3.5rem
               background:#fff
+              padding-bottom:0.2rem
               .shareitem
                 margin:auto 0.32rem
                 border-top:1px solid $color-border
                 .user
-                  display:flex
                   font-size:0.24rem
-                  height:0.8rem
-                  align-items:center
-                  justify-content:space-between
                   color:$color-issue-font
+                  margin-top:0.2rem
                   .left
                     display:flex
                     align-items:center
                     span
                       color:$color-sky-blue
+                  .toptime
+                    margin-top:0.2rem
+                    line-height:0.35rem
                 .comment
                   font-size:0.3rem
                   word-wrap:break-word
+                  margin:0.2rem 0rem
                 .imglist
                   font-size:0
                   display:flex

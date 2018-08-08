@@ -1,22 +1,16 @@
 <template>
 <transition name="slide">
   <div class="usercenter" @click="closeNavBar($event)">
-    <!-- <div class="title">
-      <span class="left" @click="backToHome">left</span>
-      <span>wenjie</span>
-      <span @click="showNav">...</span>
-    </div> -->
-    <!-- <div class="mark" v-show="loading"></div> -->
     <div class="title">
-      <p class="left" @click="backToHome">
-        <span class="icon-fanhui1"></span>
-      </p>
-      <!-- $t('userCenter.meta') -->
-      <!-- userMsg.nickname -->
-      <p class="center">{{$t('userCenter.meta')}}</p>
-      <p class="right">
-        <span class="icon-icon-"  @click="showNav"></span>
-      </p>
+      <div class="titlecontainer">
+        <p class="left" @click="backToHome">
+          <span class="icon-fanhui1"></span>
+        </p>
+        <p class="center">{{$t('userCenter.meta')}}</p>
+        <p class="right">
+          <span class="icon-icon-"  @click="showNav"></span>
+        </p>
+      </div>
     </div>
     <div class="empty"></div>
     <div class="goldnum">
@@ -29,7 +23,7 @@
           <!-- 金币 -->
           <div class="goldnums">
             <span class="gold">{{userMsg.gold}}</span>
-            <p class="goldtext">{{$t('userCenter.gold')}}</p>
+            <p class="goldtext">Boletos</p>
           </div>
           <p class="payBtn" @click="toPayPage">{{($t('userCenter.payText'))}}</p>
         </div>
@@ -43,9 +37,9 @@
         <!-- 我的晒单 -->
         <p @click="toWinnerShow">{{$t('newhome.sharelist')}}</p>
         <!-- 使用条款 -->
-        <p @click="touserlus">Términos y condiciones</p>
+        <!-- <p @click="touserlus">Términos y condiciones</p> -->
         <!-- 退出登录 -->
-        <p @click="exitH5" v-show="isAndroid">Salir</p>
+        <p @click="exitH5">Salir</p>
       </div>
     </div>
     <div class="usermsg_list">
@@ -54,7 +48,7 @@
           <div class="iconitem">
             <!-- <span class="icon-jilu icon"></span> -->
             <!-- 夺宝记录 -->
-            <span class="icon_text">{{$t('userCenter.snatchRecord')}}</span>
+            <span class="icon_text">Historial</span>
           </div>
           <div class="arrow_left">
             <span class="icon-arrow icon"></span>
@@ -64,9 +58,15 @@
           <div class="iconitem">
             <!-- <span class="icon-tubiao207 icon"></span> -->
             <!-- 中奖记录 -->
-            <span class="icon_text">{{$t('userCenter.prizeRecord')}}</span>
+            <span class="icon_text">Tus Premios</span>
           </div>
           <div class="arrow_left">
+            <div class="nums" v-show="userMsg">
+              <p class="numsContainer" v-show="userMsg.num">
+                <span>{{userMsg.num}}</span>
+                <span v-show="userMsg.num>99">+</span>
+              </p>
+            </div>
             <span class="icon-arrow icon"></span>
           </div>
         </li>
@@ -74,26 +74,27 @@
           <div class="iconitem">
             <!-- <span class="icon-dizhi1 icon"></span> -->
             <!-- 充值记录 -->
-            <span class="icon_text">{{$t('userCenter.payRecord')}}</span>
+            <span class="icon_text">Tus Recargas</span>
           </div>
           <div class="arrow_left">
             <span class="icon-arrow icon"></span>
           </div>
         </li>
-        <!-- <li class="user_item" @click="toShare">
+        <li class="user_item" @click="toMyInvita">
           <div class="iconitem">
-            <span class="icon-xiangji icon"></span>
-            <span class="icon_text">晒单</span>
+            <!-- <span class="icon-jilu icon"></span> -->
+            <!-- 夺宝记录 -->
+            <span class="icon_text">Mi código de invitación</span>
           </div>
           <div class="arrow_left">
             <span class="icon-arrow icon"></span>
           </div>
-        </li> -->
+        </li>
       </ul>
     </div>
     <div class="bottom">
       <!-- 客服邮箱 -->
-      <p>{{$t('question.customerServiceEm')}}：servicio@1peso.com.mx</p>
+      <!-- <p>{{$t('question.customerServiceEm')}}：servicio@1peso.com.mx</p> -->
     </div>
   </div>
   </transition>
@@ -108,10 +109,12 @@
         userMsg: {},
         navState: false,
         loading: false,
-        isAndroid: false
+        isAndroid: false,
+        channelType: ''
       }
     },
     created () {
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
       this._getSimpleUserInfo()
       this.checkoutIsAndrio()
     },
@@ -124,17 +127,21 @@
           this.isAndroid = true
         }
       },
+      toMyInvita () {
+        this.$router.push({path: '/myInvita/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
+      },
       exitH5 () {
         // 退出登录
-        logOut().then(res => {
+        logOut({}).then(res => {
           if (res.data.errCode === 0 && res.data.retCode === 0) {
-            this.$router.push('/home/' + this.$i18n.locale)
+            localStorage.removeItem('Nums')
+            this.$router.push({path: '/home/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
           }
         })
       },
       touserlus () {
         // 查看使用条款
-        this.$router.push('/userlus/' + this.$i18n.locale)
+        this.$router.push({path: '/userlus/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       },
       refreshData () {
         this._getSimpleUserInfo()
@@ -144,7 +151,9 @@
         this.$router.push({path: '/recordlist/' + this.$i18n.locale,
           query: {
             nickName: this.userMsg.nickname,
-            userName: this.userMsg.username
+            userName: this.userMsg.username,
+            channelType: this.channelType,
+            channelTag: this.channelTag
           }})
       },
       closeNavBar (e) {
@@ -154,35 +163,41 @@
       },
       backToHome () {
         // 返回首页
-        this.$router.push('/home/' + this.$i18n.locale)
+        this.$router.push({path: '/home/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       },
       toShare () {
         // 进入晒单页面
-        this.$router.push('/shareorder/' + this.$i18n.locale)
+        this.$router.push({path: '/shareorder/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       },
       toPrizeRecord () {
         // 中奖记录
-        this.$router.push('/userrecord/' + this.$i18n.locale)
+        this.$router.push({path: '/userrecord/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       },
       toAddressList () {
         // 进入地址列表页面
-        this.$router.push('/addresslist/' + this.$i18n.locale)
+        this.$router.push({path: '/addresslist/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       },
       toWinnerShow () {
         // 进入晒单列表页面
-        this.$router.push('/winnershow/' + this.$i18n.locale)
+        this.$router.push({path: '/winnershow/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       },
       toPayRecord () {
         // 充值记录
-        this.$router.push('/payrecord/' + this.$i18n.locale)
+        this.$router.push({path: '/payrecord/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       },
       toPayPage () {
         // 进入充值选项页面
-        this.$router.push('/pay/' + this.$i18n.locale)
+        this.$router.push({path: '/pay/' + this.$i18n.locale,
+          query: {
+            channelType: this.channelType,
+            channelTag: this.channelTag,
+            usercenter: true
+          }})
       },
       _getSimpleUserInfo () {
-        // this.$loading({state: true})
+        this.$loading({state: true})
         getSimpleUserInfo({}).then(res => {
+          this.$loading({state: false})
           if (res.data.errCode === this.$ERR_CODE && res.data.retCode === this.$RET_CODE) {
             this.userMsg = res.data.data
           }
@@ -238,33 +253,34 @@
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      // justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
       border-bottom:1px solid $color-border
-      .left
-        position:absolute
-        left:0
-        font-size:0
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        font-size:0.4rem
-        color:$color-meta
-      .center
-        width:100%
-        text-align:center
-      .right
-        position:absolute
-        right:0
-        font-size:0
-        padding:0.175rem 0.25rem 0.175rem 0.3rem
-        font-size:0.55rem
-        color:$color-meta
+      .titlecontainer
+        display:flex
+        align-items:center
+        margin:auto 0.32rem
+        .left
+          position:absolute
+          left:0
+          font-size:0
+          padding:0 0.3rem 0 0.25rem
+          font-size:0.4rem
+          color:$color-meta
+        .center
+          width:100%
+          text-align:center
+        .right
+          position:absolute
+          right:0
+          font-size:0
+          padding:0 0.25rem 0 0.3rem
+          font-size:0.55rem
+          color:$color-meta
     .empty
       padding-top:0.9rem
     .goldnum
@@ -342,6 +358,31 @@
           font-size:0.3rem
           line-height:1rem
           color:$color-six-font
+          position: relative
+          .arrow_left
+            .nums
+              position: absolute
+              right:0.8rem
+              display:inline-block
+              border-radius:100%
+              color:#fff
+              text-align:center
+              top:50%
+              transform:translateY(-50%)
+              font-size:0.2rem
+              .numsContainer
+                background:$color-meta
+                width:0.4rem
+                height:0.4rem
+                line-height:0.46rem
+                border-radius:100%
+                position: relative
+              .numsContainer>span:nth-child(2)
+                position:absolute
+                color:$color-meta
+                top:-0.1rem
+                right:-0.15rem
+                font-size:0.35rem
           .icon
             font-size:0.45rem
           .icon-arrow

@@ -1,69 +1,94 @@
 <template>
   <div class="userlus">
     <div class="titles">
-      <span @click="backUserCenter" class="left icon-fanhui1"></span>
-      <!-- 使用条款 -->
-      <p>{{$t('supplement.rlusMeta')}}</p>
+      <div class="titlecontainer">
+        <span @click="backUserCenter" class="left icon-fanhui1"></span>
+        <!-- 使用条款 -->
+        <p>{{$t('supplement.rlusMeta')}}</p>
+      </div>
     </div>
     <div class="userrluscon">
-      <p class="title1">Acuerdo de la plataforma de compras "$1 PARA GANAR"</p>
-      <p class="containe1">Bienvenido a visitar y usar la página web de compras interactivas interesantes ——"$1 PARA GANAR" （www.1peso.com.mx）, como una plataforma de comercio electrónico que ofrece a los usuarios formas de compras nuevas e interesantes, La web "$1 PARA GANAR" le brinda servicios de compras en línea. Al usar los servicios específicos de la web "$1 PARA GANAR", usted y la web estarán sujetos a estas reglas de acuerdo de servicio. La web "$1 PARA GANAR" continuará lanzando nuevos productos y servicios, cuando usted acepta diversos bienes y servicios, se considera que está sujeto a su aceptación de este acuerdo de servicio y los términos del servicio relacionados con la página web. Lea los términos de este acuerdo de servicio cuidadosamente antes de registrarse y utilizar el servicio. Si tiene alguna pregunta, llame a la web "$1 PARA GANAR" para una consulta oportuna. Una vez que se haya registrado exitosamente, se considerará que ha aceptado el acuerdo de servicio. Este acuerdo de servicio tendrá efecto legal entre el usuario y la web "$1 PARA GANAR". Haga clic en el botón "Aceptar" durante el proceso de registro para indicar que acepta completamente todos los términos de este acuerdo y siga las instrucciones de la página para completar todos los pasos de registro.</p>
-      <p class="containe2">La web "$1 PARA GANAR" seguirá el principio de servir a los clientes y respetar la ley, revisa de forma irregular los términos de este acuerdo de servicio y reserva el derecho de revisar todos los términos de este acuerdo cuando sea necesario. Una vez que se haya revisado el contenido del acuerdo, la web "$1 PARA GANAR" se les notificará oportunamente a los usuarios en la página destacada de la web o la zona importante. Si continúa utilizando el servicio de la web "$1 PARA GANAR", se considerará que ha aceptado los cambios en el acuerdo. Si usted no está de acuerdo con los cambios realizados por la web al contenido del acuerdo, La web anula el derecho de utilizar su servicio relacionado de manera oportuna.</p>
-      <p class="title">Registro de usuario</p>
-      <p class="containe1">I.El registro de usuario se refiere al proceso en el cual un usuario inicia sesión en la web "$1 PARA GANAR", complete la información del usuario relevante según sea necesario y confirme el proceso de aceptación de este acuerdo de servicio.</p>
-      <p class="containe2">II.El usuario de la web "$1 PARA GANAR" debe ser una persona natural con plena capacidad civil o una organización con operaciones legales continuas. Las personas sin capacidad para la conducta civil, las personas con capacidad limitada para la conducta civil, y las organizaciones sin requisitos comerciales o de negocios específicos no pueden registrarse como usuarios. El usuario que excede el alcance de sus derechos civiles o la capacidad realiza una transacción con la web "$1 PARA GANAR", la transacción no es válida desde el principio. La web "$1 PARA GANAR" tiene el derecho de detener inmediatamente la transacción con el usuario, cancelar la cuenta del usuario y tener el derecho a exigir la responsabilidad legal correspondiente.</p>
-      <p class="title">Cuenta de usuario, contraseña y seguridad</p>
-      <p class="containe1">Una vez que el usuario se registra con éxito, se convierte en un usuario legítimo de la web y el usuario será responsable de la seguridad del nombre de usuario y la contraseña. Además, cada usuario debe asumir la plena responsabilidad de todas las actividades y eventos realizados con su nombre de usuario. Si el usuario encuentra un uso ilegal de la cuenta de usuario o hay una vulnerabilidad de seguridad, informe a esta web de inmediato.</p>
-      <p class="title">Reglas de recarga y uso de la cuenta</p>
-      <p class="containe1">I.Una vez que el usuario se convierte en miembro de "$1 PARA GANAR", el usuario puede recargar la cuenta. El monto de la recarga es en forma de moneda y existe en una cuenta de miembro de "$1 PARA GANAR".</p>
-      <p class="containe2">II.El saldo de la cuenta solo se puede usar en el mercado de "$1 PARA GANAR" y no se puede usar para comprar o canjear otros productos de otra web ni transferirlo a otros usuarios.</p>
-      <p class="title">Derechos y obligaciones del usuario</p>
-      <p class="containe1">I.Los usuarios tienen derecho a poseer y controlar de forma independiente su nombre de usuario y contraseña en la web "$1 PARA GANAR",  usan el nombre de usuario y la contraseña para iniciar sesión en "$1 PARA GANAR" y participar en la compra de productos.</p>
-      <p class="containe2">II.El usuario tiene derecho a buscar información de productos, subir fotos, publicar comentarios, participar en actividades de "$1 PARA GANAR" y disfrutar de otras actividades proporcionadas por "$1 PARA GANAR" de acuerdo con las reglas de este Acuerdo y las normas relevantes publicadas en la web "$1 PARA GANAR".</p>
-      <p class="containe2">III.El usuario está obligado a proporcionar su información de identidad verdadera al registrarse, y garantizar la validez y autenticidad de tales contenidos como dirección de correo electrónico, número de teléfono de contacto, dirección de contacto, código postal, etc. para que "$1 PARA GANAR"  pueda contactar al usuario a través de la información de contacto anterior.</p>
-      <p class="containe2">IV.Los usuarios deben asegurarse de que se sigan los principios de honestidad y crédito cuando participen en el intercambio de bienes y servicios en la web "$1 PARA GANAR" y no perturben el orden normal de las transacciones en línea.</p>
-      <p class="containe2">V.Los usuarios deben confirmar la información de contacto después de ganar el premio al participar en "$1 PARA GANAR", si nuestro personal de servicio al cliente no puede comunicarse con usted debido a múltiples razones, como su error de información de contacto, por lo tanto, la web no es responsable de ninguna pérdida causada por este comportamiento.</p>
-      <p class="title">Derechos y obligaciones de la web "$1 PARA GANAR"</p>
-      <p class="containe2">I.La web "$1 PARA GANAR" está obligada a mantener el funcionamiento normal de toda la plataforma de comercio en línea con la tecnología existente, y se esfuerza por elevar y mejorar la tecnología, de modo que las actividades de comercio en línea de los usuarios se puedan llevar a cabo sin problemas</p>
-      <p class="containe2">III.Para los usuarios que han realizado las siguientes acciones en la web "$1 PARA GANAR", la web tiene el derecho de eliminar la información relevante y terminar la prestación del servicio sin obtener el consentimiento del usuario:</p>
-      <p class="containe3"><span class="dot"></span>La web "$1 PARA GANAR" tiene el derecho de verificar la información de registro del usuario y el comportamiento de compra, si hay algún problema en la información de registro o en el comportamiento de compra, la web tiene derecho a solicitar al usuario que explique y corrija la notificación en un tiempo razonable o de eliminarla, ect.</p>
-      <p class="containe3"><span class="dot"></span>Si un usuario viola las disposiciones de este acuerdo o viola las leyes, reglas y regulaciones locales, la web "$1 PARA GANAR" se reserva el derecho de detener la transmisión y eliminar su información.</p>
-      <p class="containe2">IV.Para los productos en línea que se han puesto en vendiendos, la web "$1 PARA GANAR" tiene derecho a modificar el precio de los productos en función de los cambios del mercado sin tener que notificar a los clientes con antelación.</p>
-      <p class="containe2">V.Si se produce una de las siguientes condiciones, la web "$1 PARA GANAR" tiene derecho a cancelar el pedido de compra del usuario.</p>
-      <p class="containe3"><span class="dot"></span>Debido a fuerza mayor, falla del sistema de "$1 PARA GANAR" o ataques de terceros, u otras situaciones que la web "$1 PARA GANAR" no puede controlar</p>
-      <p class="containe3"><span class="dot"></span>De acuerdo con varias regulaciones y anuncios que se han emitido o pueden ser lanzados o actualizados en el futuro, la empresa de "$1 PARA GANAR"  tiene el derecho de cancelar pedidos de los usuarios.</p>
-      <p class="containe3"><span class="dot"></span>Una vez que la empresa de "$1 PARA GANAR"  tenga el derecho de cancelar el pedido del usuario, el usuario puede solicitar un reembolso de monedas, el monto reembolsado por la empresa se reembolsará a la cuenta del usuario dentro de los 3 días hábiles.</p>
-      <p class="containe2">VI.Los productos que no estén lleno el cupo dentro de los 30 días se reembolsarán a la cuenta del usuario en forma de monedas dentro de los 3 días hábiles.</p>
-      <p class="title">Entrega y gastos</p>
-      <p class="containe2">I.Entrega de porductos de "$1 PARA GANAR"</p>
-      <p class="containe3"><span class="dot"></span>Para todos productos de "$1 PARA GANAR" , solo brinda servicios de entrega a México</p>
-      <p class="containe3"><span class="dot"></span>Si el servicio de mensajería(EXPRESS) no puede ser entregado a la dirección de entrega provista por el ganador, será entregado al lugar de entrega más cercano de manera automática y lo recogerá por el ganador mismo.</p>
-      <p class="containe2">II.Rellene claramente su nombre real, número de teléfono y otra información para asegurarse de que nuestro personal de servicio al cliente pueda contactarlo a tiempo después de ganar el producto. Si los bienes no se pueden entregar debido a las siguientes condiciones o el derecho de propiedad es incorrecto, nuestra web no será responsable de este caso.</p>
-      <p class="containe3"><span class="dot"></span>El usuario proporciona un mensaje de error: incluye teléfono, dirección y código postal</p>
-      <p class="containe3"><span class="dot"></span>Después de que el usuario gana el producto, el personal de servicio al cliente no puede contactarlo debido a la razón del usuario.</p>
-      <p class="containe3"><span class="dot"></span>Factores de fuerza mayor, tales como: desastres naturales, guerras repentinas, etc.</p>
-      <p class="containe2">III.Después de que el usuario gana el producto, no hay necesidad de pagar por la entrega..</p>
-      <p class="title">Limitación de responsabilidad</p>
-      <p class="containe2">Dentro de los límites permitidos por las leyes y regulaciones, cualquier daño o pérdida económica resultante del uso del Servicio de la web "$1 PARA GANAR", la responsabilidad general de la web "$1 PARA GANAR" no excede el precio de los bienes comprados por el usuario en relación con el reclamo. Estas limitaciones de responsabilidad se aplicarán en la medida máxima permitida por la ley y continuarán siendo válidos después de que la capacitación del usuario sea revocada o cancelada</p>
-      <p class="title">Jurisdicción y aplicación de ley</p>
-      <p class="containe2">I.La conclusión, interpretación, ejecución de este acuerdo y la resolución de disputas se aplicarán a la ley mexicana</p>
-      <p class="containe2">II.Si hay un conflicto entre los términos de servicio de la web y la ley mexicana, estos términos se interpretarán completamente de acuerdo con la ley, los otros términos legales aún mantienen validez legal e influencia en los usuarios.</p>
-      <p class="containe2">III.Las disposiciones de este acuerdo son separables. Si se determina que alguna disposición de este acuerdo es inválida o inaplicable, la disposición puede ser eliminada y las disposiciones restantes deben ser ejecutadas.</p>
-      <p class="containe2">IV.En caso de cualquier disputa entre las partes con respecto al contenido de este acuerdo o su ejecución, ambas partes harán sus mejores esfuerzos para resolver el asunto a través de una negociación amistosa. En caso de que no se llegue a un acuerdo entre las dos partes, cualquiera de las partes puede entablar un litigio en un tribunal con jurisdicción en el sitio donde se encuentra la web "$1 PARA GANAR".</p>
+      <scroll
+        :listenScroll="listenScroll"
+        class="userrluscontainer"
+      >
+        <div>
+          <p class="title1">Términos y Condiciones de 1PESO.MX</p>
+          <p class="containe1">1PESO.MX es una plataforma que ofrece a los usuarios boletos para participar en el sorteo de diversos productos.</p>
+          <p class="containe2">Cuando se hace uso de la plataforma 1PESO.MX el usuario acepta este Acuerdo de Servicio y los Términos y Condiciones relacionados con la misma.</p>
+          <p class="containe2">Se recomienda leer los Términos y Condiciones cuidadosamente antes de registrarse y utilizar el servicio. Si tiene alguna duda, favor de contactar a 1PESO.MX a través de <span class="email">soporte@1peso.com.mx</span> </p>
+          <p class="containe2">Una vez que se haya registrado exitosamente, se considerará que ha aceptado los Términos y Condiciones como parte del Acuerdo de Servicio. Este acuerdo de servicio tendrá efecto legal entre el usuario y 1PESO.MX.</p>
+          <p class="containe2">De acuerdo con el principio de servir a los clientes y respetar la ley, revisaremos los términos de este acuerdo periódicamente, reservándonos el derecho de modificar los términos de este acuerdo cuando sea necesario. Una vez que se haya modificado el contenido del acuerdo, 1PESO.MX dará aviso al usuario en la página principal del sitio web o en sección de destacados. Si continúa utilizando los servicios de 1PESO.MX, se considerará que acepta los cambios en el acuerdo. Si no acepta los cambios realizados al contenido del acuerdo, 1PESO.MX cancelará de inmediato el uso de los servicios relacionados.</p>
+          <p class="title">I. Del registro de usuarios</p>
+          <p class="containe3"><span class="number">1.</span>El registro se trata del proceso cuando el usuario llena los datos requeridos y revisa el acuerdo.</p>
+          <p class="containe3"><span class="number">2.</span>Los usuarios de 1PESO.MX deben ser personas físicas, mayores de edad con plena capacidad civil u organizaciones con operaciones legales continuas. Las personas sin capacidad de conducta civil, personas con capacidad civil limitada u organizaciones sin negocios o calificaciones comerciales específicas no pueden registrarse como usuarios de 1PESO.MX. </p>
+          <p class="title">II. De la cuenta, la contraseña y la seguridad</p>
+          <p class="containe2">Una vez que el usuario se registra con éxito, se convierte en un usuario legítimo de 1PESO.MX, y el usuario será responsable de la seguridad del nombre de usuario y la contraseña. Además, cada usuario debe asumir la plena responsabilidad de todas las actividades y eventos realizados bajo su nombre de usuario. Si el usuario incurre en el uso ilegal de la cuenta o hay una vulnerabilidad de seguridad, la cuenta puede ser suspendida sin previo aviso.</p>
+          <p class="title">III. De las recargas de boletos y las reglas</p>
+          <p class="containe3"><span class="number">1.</span>Después de que el usuario se convierta en miembro de 1PESO.MX, el usuario puede recargar la cantidad de boletos que ellos deseen en su cuenta. Cada boleto tiene un precio unitario de $1.00 MXN.</p>
+          <p class="containe3"><span class="number">2.</span>El saldo de la cuenta está limitado a la plataforma 1PESO.MX y no se puede usar para comprar o canjear otros productos del sitio web ni transferirlo a otros usuarios.</p>
+          <p class="title">IV. De los derechos y las obligaciones de usuarios</p>
+          <p class="containe3"><span class="number">1.</span>Los usuarios tienen el derecho de propiedad y dominio de su nombre de usuario y contraseña en 1PESO.MX, así como a utilizar el nombre de usuario y contraseña para acceder 1PESO.MX y participar en los productos y compra de boletos. Los usuarios no pueden transferir a terceros su cuenta de 1PESO.MX en ninguna forma.</p>
+          <p class="containe3"><span class="number">2.</span>Los usuarios tienen derecho a consultar la información de los productos, las reglas y el Aviso de Privacidad de 1PESO.MX en virtud del presente acuerdo.</p>
+          <p class="containe3"><span class="number">3.</span>El usuario está obligado a proporcionar información verídica acerca de su identidad en el momento del registro, así como asegurar la validez y autenticidad del contenido, como la dirección de correo electrónico, número de teléfono, dirección, código postal, etc. Con el objetivo de que 1PESO.MX pueda ponerse en contacto con el usuario. Al mismo tiempo, el usuario también está obligado a actualizar los datos de registro relevantes cuando estos cambien.</p>
+          <p class="containe3"><span class="number">4.</span>Los usuarios no pueden registrarse y participar en el los productos con la información de otras personas en 1PESO.MX.</p>
+          <p class="containe3"><span class="number">5.</span>Los usuarios deben garantizar que se cumplan los principios de honestidad y credibilidad al participar en 1PESO.MX, así como no perturbar el orden normal de las transacciones en línea.</p>
+          <p class="containe3"><span class="number">6.</span>Se requiere que el usuario confirme la información de contacto después de haber ganado uno de los productos de 1PESO.MX, si por errores provocados por el mismo usuario nuestro personal de servicio al cliente no puede ponerse en contacto con él, ​​1PESO.MX no asume responsabilidad alguna.</p>
+          <p class="title">V. De los derechos y las obligaciones de 1PESO.MX</p>
+          <p class="containe3"><span class="number">1.</span>1PESO.MX está obligado a mantener el funcionamiento normal la plataforma y esforzarse para así permitir a los usuarios participar sin ningún tipo de complicaciones.</p>
+          <p class="containe3"><span class="number">2.</span>El personal de atención al cliente de 1PESO.MX responderá de manera oportuna a los problemas relacionados con la transacción, registro y uso de la plataforma 1PESO.MX.</p>
+          <p class="containe3"><span class="number">3.</span>En caso de que el usuario incurra en alguna de las siguientes conductas dentro de la plataforma, 1PESO.MX tiene el derecho de suspender su cuenta, eliminar la información relacionada, finalizar el servicio, etc., sin obtener el consentimiento del usuario:</p>
+          <p class="containe4"><span class="letter">a.</span>Cuando el usuario haya falsificado información en el momento del registro información de registro o con respecto a tarjetas de crédito u otras formas de pago.</p>
+          <p class="containe4"><span class="letter">b.</span>Si el usuario infringe las disposiciones de este acuerdo o viola las leyes y regulaciones locales.</p>
+          <p class="containe3"><span class="number">4.</span>Para los productos de la plataforma, 1PESO.MX se reserva el derecho de modificar el precio del producto de acuerdo con los cambios del mercado sin previo aviso a los clientes.</p>
+          <p class="containe3"><span class="number">5.</span>Si se dan las siguientes condiciones, 1PESO.MX se reserva el derecho de cancelar el envío del producto al usuario:</p>
+          <p class="containe4"><span class="letter">a.</span>Por causas de fuerza mayor, falla del sistema de red, ataques de terceros u otras situaciones más allá del control de 1PESO.MX.</p>
+          <p class="containe4"><span class="letter">b.</span>Después de que 1PESO.MX haya cancelado el envío, el usuario puede solicitar el reembolso del importe en su cuenta. El importe se reembolsará a la cuenta del usuario dentro de los siguientes 3 días hábiles.</p>
+          <p class="containe3"><span class="number">6.</span>Los productos que no logren vender la cantidad predeterminada de boletos dentro de 30 días serán finalizados. Una vez finalizado el producto se reembolsarán en su totalidad los boletos con lo que el usuario haya participado dentro de 3 días hábiles.</p>
+
+
+
+          <p class="title">VI. De la entrega de Productos y los costos</p>
+          <p class="containe3"><span class="number">1.</span>1PESO.MX absorberá los gastos generados por los servicios de paquetería necesarios para realizar la entrega del producto tomando en cuenta lo siguiente:</p>
+          <p class="containe4"><span class="letter">a.</span>1PESO.MX únicamente brinda servicios dentro del territorio de los Estados Unidos Mexicanos.</p>
+          <p class="containe4"><span class="letter">b.</span>Si el servicio de paquetería no puede entregar el producto a la dirección provista por el ganador, éste será entregado al punto de recolección más cercano de manera predeterminada y el ganador mismo tendrá que recolectarlo.</p>
+          <p class="containe3"><span class="number">2.</span>El usuario deberá completar con veracidad los campos de registro con nombre, número de teléfono y domicilio para asegurarse de que nuestro personal de atención al cliente pueda contactarlo al momento de resultar ganador.</p>
+          <p class="containe3"><span class="number">3.</span>Si los productos no se pueden entregar debido a las siguientes condiciones 1PESO.MX no será responsable:</p>
+          <p class="containe4"><span class="letter">1)</span>Cuando el usuario proporcione información falsa o incorrecta: incluye teléfono, dirección y código postal.</p>
+          <p class="containe4"><span class="letter">2)</span>Cuando el personal de servicio al cliente no pueda contactar al usuario debido a razones provocadas por él mismo.</p>
+          <p class="containe4"><span class="letter">3)</span>Causas de fuerza mayor, tales como: desastres naturales, guerras repentinas, etc.</p>
+
+          <p class="title">VII. Del límite de la responsabilidad</p>
+          <p class="containe2">En la medida permitida por las leyes y regulaciones, cualquier daño o pérdida económica que surja del uso de la plataforma 1PESO.MX, tal como la adquisición de boletos en la misma, generará ningún tipo de responsabilidad para 1PESO.MX</p>
+          <p class="containe2">Estos límites de responsabilidad se aplicarán en la medida permitida por la ley y continuarán siendo válidos después de que la cuenta del usuario sea revocada o cancelada.</p>
+          <p class="title">VIII. De la ley y aplicación</p>
+          <p class="containe3"><span class="number">1.</span>El establecimiento, la implementación y la interpretación de este acuerdo y la resolución de disputas se regirán por las leyes de los Estados Unidos Mexicanos.</p>
+          <p class="containe3"><span class="number">2.</span>En caso de que los términos del servicio del sitio entren en conflicto con la ley mexicana, estos términos serán reinterpretados completamente de acuerdo con la ley, mientras que otros términos legales seguirán teniendo efecto legal e influencia en los usuarios.</p>
+          <p class="containe3"><span class="number">3.</span>Las disposiciones de este acuerdo son divisibles. Si se determina que alguna disposición de este acuerdo es inválida o inaplicable, dicha disposición puede ser eliminada y las disposiciones restantes se aplicarán.</p>
+          <p class="containe3"><span class="number">4.</span>En caso de cualquier disputa entre las partes sobre el contenido de este acuerdo o su implementación, ambas partes harán sus mejores esfuerzos para resolver el asunto mediante negociaciones amistosas. Cuando no se llega a un acuerdo entre las partes, cualquiera de las partes puede entablar una demanda en el tribunal competente del sitio donde se encuentra 1PESO.MX.</p>
+
+        </div>
+      </scroll>
     </div>
       <p class="bottom">E-mail：servicio@1peso.com.mx</p>
   </div>
 </template>
 
 <script>
+  import scroll from '@/components/scroll/scroll'
   export default {
     data () {
-      return {}
+      return {
+        listenScroll: true
+      }
     },
     methods: {
       backUserCenter () {
         this.$router.back()
       }
+    },
+    components: {
+      scroll
     }
   }
 </script>
@@ -81,68 +106,100 @@
     .titles
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
       border-bottom:1px solid $color-border
-      .left
-        position:absolute
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        left:0
-        font-size:0.4rem
-        color:$color-meta
-      p
-        text-align:center
-        width:100%
-    .userrluscon
-      margin-top:0.9rem
-      background:#fff
-      padding:0 0.3rem
-      padding-bottom:1.5rem
-      width:6.9rem
-      color:#333
-      .title1
-        font-size:0.3rem
-        font-weight: bold
-        padding-top:0.25rem
-      .title
-        font-size:0.3rem
-        font-weight: bold
-      .containe1
-        font-size:0.24rem
-        margin-top:0.3rem
-        line-height:0.3rem
-        // margin-bottom:0.3rem
-      .containe2
-        font-size:0.24rem
-        margin-top:0.4rem
-        margin-bottom:0.3rem
-        line-height:0.3rem
-      .containe3
-        font-size:0.3rem
-        font-size:0.24rem
-        line-height:0.3rem
-        // display:flex
-        // align-items:center
-        margin-left:0.4rem
-        position: relative
-        .dot
-          display:inline-block
+      .titlecontainer
+        display:flex
+        justify-content:space-between
+        align-items:center
+        margin:auto 0.2rem
+        .left
           position:absolute
-          width:0.1rem
-          height:0.1rem
-          background:#333
-          border-radius:100%
-          vertical-align:middle
-          margin-right:0.1rem
-          left:-0.2rem
-          top:0.1rem
+          padding:0 0.3rem 0 0.25rem
+          left:0
+          font-size:0.4rem
+          color:$color-meta
+        p
+          text-align:center
+          width:100%
+    .userrluscon
+      padding-top:0.9rem
+      background:#fff
+      padding-bottom:1.5rem
+      // width:100%
+      color:#333
+      .userrluscontainer
+        margin:auto 0.2rem
+        height:10rem
+        .title1
+          font-size:0.3rem
+          font-weight: bold
+          padding-top:0.25rem
+        .title
+          font-size:0.25rem
+          font-weight: bold
+        .containe1
+          font-size:0.24rem
+          margin-top:0.3rem
+          line-height:0.3rem
+          // margin-bottom:0.3rem
+        .containe2
+          font-size:0.24rem
+          margin-top:0.4rem
+          margin-bottom:0.3rem
+          line-height:0.3rem
+          .email
+            color:$color-sky-blue
+        .containe3
+          font-size:0.3rem
+          font-size:0.24rem
+          line-height:0.3rem
+          margin-top:0.2rem
+          // display:flex
+          // align-items:center
+          margin-left:0.4rem
+          position: relative
+          margin-bottom:0.2rem
+          .dot
+            display:inline-block
+            position:absolute
+            width:0.1rem
+            height:0.1rem
+            background:#333
+            border-radius:100%
+            vertical-align:middle
+            margin-right:0.1rem
+            left:-0.2rem
+            top:0.1rem
+          .number
+            display:inline-block
+            position:absolute
+            border-radius:100%
+            vertical-align:middle
+            margin-right:0.1rem
+            left:-0.2rem
+        .containe4
+          font-size:0.3rem
+          font-size:0.24rem
+          line-height:0.3rem
+          margin-top:0.2rem
+          // display:flex
+          // align-items:center
+          margin-left:0.7rem
+          position: relative
+          margin-bottom:0.2rem
+          .letter
+            display:inline-block
+            position:absolute
+            border-radius:100%
+            vertical-align:middle
+            margin-right:0.1rem
+            left:-0.3rem
     .bottom
       position:absolute
       font-size:0.24rem

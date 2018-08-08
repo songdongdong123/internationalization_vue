@@ -20,14 +20,19 @@
 <script>
   export default {
     data () {
-      return {}
+      return {
+        channelType: ''
+      }
+    },
+    created () {
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
     },
     methods: {
       toPayrecord () {
-        this.$router.push({path: '/payrecord/' + this.$i18n.locale, query: {source: 'paytimeout'}})
+        this.$router.push({path: '/payrecord/' + this.$i18n.locale, query: {source: 'paytimeout', channelType: this.channelType, channelTag: this.channelTag}})
       },
       toUserCenter () {
-        this.$router.push({path: '/usercenter/' + this.$i18n.locale, query: {source: 'paytimeout'}})
+        this.$router.push({path: '/usercenter/' + this.$i18n.locale, query: {source: 'paytimeout', channelType: this.channelType, channelTag: this.channelTag}})
       }
     }
   }

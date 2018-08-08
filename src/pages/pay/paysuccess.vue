@@ -23,22 +23,38 @@
         part: '10',
         money: 0,
         score: '',
-        issueNo: ''
+        issueNo: '',
+        channelType: ''
       }
     },
     created () {
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
       this.money = this.$route.query.money
       this.score = this.$route.query.score
       this.issueNo = this.$route.query.issueNo
     },
     methods: {
       toProDetail () {
-        this.$router.push({path: '/usercenter/' + this.$i18n.locale})
-        // if (this.score) {
-        //   this.$router.push({path: '/productdetail/' + this.$i18n.locale, query: {issueNo: this.issueNo}})
-        // } else {
-        //   this.$router.push({path: '/usercenter/' + this.$i18n.locale})
-        // }
+        let proIssueNo = JSON.parse(window.localStorage.getItem('proIssueNo'))
+        localStorage.removeItem('proIssueNo')
+        localStorage.removeItem('b536a272efe64829d0')
+        if (proIssueNo) {
+          if (Number(proIssueNo.activityType) === 4) {
+            if (proIssueNo.falg) {
+              this.$router.push({path: '/activityproduct/' + this.$i18n.locale, query: {issueNo: proIssueNo.issueNo, falg: proIssueNo.falg, channelType: this.channelType, channelTag: this.channelTag}})
+            } else if (proIssueNo.tag) {
+              this.$router.push({path: '/activityproduct/' + this.$i18n.locale, query: {issueNo: proIssueNo.issueNo, tag: proIssueNo.falg, channelType: this.channelType, channelTag: this.channelTag}})
+            }
+          } else {
+            if (proIssueNo.falg) {
+              this.$router.push({path: '/productdetail/' + this.$i18n.locale, query: {issueNo: proIssueNo.issueNo, falg: proIssueNo.falg, channelType: this.channelType, channelTag: this.channelTag}})
+            } else if (proIssueNo.tag) {
+              this.$router.push({path: '/productdetail/' + this.$i18n.locale, query: {issueNo: proIssueNo.issueNo, tag: proIssueNo.falg, channelType: this.channelType, channelTag: this.channelTag}})
+            }
+          }
+        } else {
+          this.$router.push({path: '/usercenter/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
+        }
       }
     }
   }

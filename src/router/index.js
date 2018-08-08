@@ -1,41 +1,110 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+// import { getQueryString } from '@/common/js/common'
 import i18n from './../language'
 
 Vue.use(Router)
-
 export default new Router({
-  linkActiveClass: 'active',
   mode: 'history',
   routes: [
     {
-      path: '/',
-      name: 'home',
+      path: `/`,
+      name: 'indexs',
       component: (resolve) => {
-        require(['@/pages/home/home'], resolve)
+        require(['@/pages/index/index'], resolve)
       },
+      redirect: `/home/${i18n.locale}`,
       meta: {
         // 首页
-        title: i18n.t('meta.index')
+        title: i18n.t('meta.index'),
+        lang: i18n.locale
       },
-      redirect: `home/${i18n.locale}`
+      children: [
+        {
+          path: `/home/${i18n.locale}`,
+          name: 'home',
+          component: (resolve) => {
+            require(['@/pages/home/newhome'], resolve)
+          },
+          meta: {
+            // 首页
+            title: i18n.t('meta.index'),
+            lang: i18n.locale
+          }
+        },
+        { // 07-06商品主页
+          path: '/productdetail/:lang',
+          name: 'productdetail',
+          component: (resolve) => {
+            require(['@/pages/productdetail/newproductdetail/productdetail'], resolve)
+          },
+          meta: {
+            // 商品详情 proDetail
+            title: i18n.t('meta.proDetail')
+          }
+        },
+        {
+          path: '/goodslist/:lang',
+          name: 'goodslist',
+          component: (resolve) => {
+            require(['@/pages/goodslist/goodslist'], resolve)
+          },
+          meta: {
+            // 首页
+            title: i18n.t('meta.index')
+          }
+        },
+        {
+          path: '/article/:lang',
+          name: 'article',
+          component: (resolve) => {
+            require(['@/pages/article/article'], resolve)
+          },
+          meta: {
+            // 首页
+            title: i18n.t('meta.index')
+          }
+        },
+        {
+          path: '/activitylist/:lang',
+          name: 'activitylist',
+          component: (resolve) => {
+            require(['@/pages/activity/activitylist'], resolve)
+          },
+          meta: {
+            // 首页
+            title: i18n.t('meta.index')
+          }
+        },
+        {
+          path: '/game/:lang',
+          name: 'game',
+          component: (resolve) => {
+            require(['@/pages/game/game'], resolve)
+          },
+          meta: {
+            // 首页
+            title: i18n.t('meta.index')
+          }
+        },
+        {
+          path: '/winner/:lang',
+          name: 'winner',
+          component: (resolve) => {
+            require(['@/pages/winner/winner'], resolve)
+          },
+          meta: {
+            // 查看获奖者
+            title: i18n.t('meta.winner')
+          }
+        }
+      ]
     },
     {
-      path: `/home/${i18n.locale}`,
-      name: 'homes',
+      path: '/myInvita/:lang',
+      name: 'myInvita',
       component: (resolve) => {
-        require(['@/pages/home/home'], resolve)
-      },
-      meta: {
-        // 首页
-        title: i18n.t('meta.index')
-      }
-    },
-    {
-      path: '/goodslist/:lang',
-      name: 'goodslist',
-      component: (resolve) => {
-        require(['@/pages/goodslist/goodslist'], resolve)
+        require(['@/pages/usercenter/myInvita'], resolve)
       },
       meta: {
         // 首页
@@ -65,6 +134,17 @@ export default new Router({
       }
     },
     {
+      path: '/protocol/:lang',
+      name: 'protocol',
+      component: (resolve) => {
+        require(['@/pages/login/protocol'], resolve)
+      },
+      meta: {
+        // 使用条款
+        title: 'Conócenos'
+      }
+    },
+    {
       path: '/usercenter/:lang',
       name: 'usercenter',
       component: (resolve) => {
@@ -87,6 +167,17 @@ export default new Router({
       }
     },
     {
+      path: '/payres/:lang',
+      name: 'payres',
+      component: (resolve) => {
+        require(['@/pages/pay/payres'], resolve)
+      },
+      meta: {
+        // 银行转账生成的订单页面
+        title: 'Orden de recarga'
+      }
+    },
+    {
       path: '/payway/:lang',
       name: 'payway',
       component: (resolve) => {
@@ -94,6 +185,39 @@ export default new Router({
       },
       meta: {
         // 选择支付方式
+        title: i18n.t('payform.payway')
+      }
+    },
+    {
+      path: '/shoppay/:lang',
+      name: 'shoppay',
+      component: (resolve) => {
+        require(['@/pages/pay/shoppay'], resolve)
+      },
+      meta: {
+        // 便利店支付
+        title: i18n.t('payform.payway')
+      }
+    },
+    {
+      path: '/oxxopay/:lang',
+      name: 'oxxopay',
+      component: (resolve) => {
+        require(['@/pages/pay/oxxopay'], resolve)
+      },
+      meta: {
+        // oxxp支付
+        title: i18n.t('payform.payway')
+      }
+    },
+    {
+      path: '/toditopay/:lang',
+      name: 'toditopay',
+      component: (resolve) => {
+        require(['@/pages/pay/toditopay'], resolve)
+      },
+      meta: {
+        // oxxp支付
         title: i18n.t('payform.payway')
       }
     },
@@ -208,17 +332,6 @@ export default new Router({
       }
     },
     {
-      path: '/winner/:lang',
-      name: 'winner',
-      component: (resolve) => {
-        require(['@/pages/winner/winner'], resolve)
-      },
-      meta: {
-        // 查看获奖者
-        title: i18n.t('meta.winner')
-      }
-    },
-    {
       path: '/winnershow/:lang',
       name: 'winnershow',
       component: (resolve) => {
@@ -264,17 +377,6 @@ export default new Router({
       }
     },
     {
-      path: '/signin/:lang',
-      name: 'signin',
-      component: (resolve) => {
-        require(['@/pages/signin/signin'], resolve)
-      },
-      meta: {
-        // 注册signIn（旧的注册页面更新后可删除）
-        title: i18n.t('meta.signIn')
-      }
-    },
-    {
       path: '/newsignin/:lang',
       name: 'newsignin',
       component: (resolve) => {
@@ -283,17 +385,6 @@ export default new Router({
       meta: {
         // 新的注册页面
         title: i18n.t('meta.signIn')
-      }
-    },
-    {
-      path: '/forget/:lang',
-      name: 'forget',
-      component: (resolve) => {
-        require(['@/pages/forgotpassword/forgotpassword'], resolve)
-      },
-      meta: {
-        // 忘记密码（后面删除）
-        title: i18n.t('meta.forGet')
       }
     },
     {
@@ -308,17 +399,6 @@ export default new Router({
       }
     },
     {
-      path: '/login/:lang',
-      name: 'login',
-      component: (resolve) => {
-        require(['@/pages/login/login'], resolve)
-      },
-      meta: {
-        // 登录 (旧的登录，更新完毕可删除)
-        title: i18n.t('meta.loGin')
-      }
-    },
-    {
       path: '/newlogin/:lang',
       name: 'newlogin',
       component: (resolve) => {
@@ -329,11 +409,35 @@ export default new Router({
         title: i18n.t('meta.loGin')
       }
     },
-    {
-      path: '/productdetail/:lang',
-      name: 'productdetail',
+    // { // 老版本商品详情
+    //   path: '/productdetail/:lang',
+    //   name: 'productdetail',
+    //   component: (resolve) => {
+    //     require(['@/pages/productdetail/productdetail'], resolve)
+    //   },
+    //   falg: 3,
+    //   meta: {
+    //     // 商品详情 proDetail
+    //     title: i18n.t('meta.proDetail')
+    //   }
+    // },
+    // { // 老版本活动商品详情
+    //   path: '/activityproduct/:lang',
+    //   name: 'activityproduct',
+    //   component: (resolve) => {
+    //     require(['@/pages/productdetail/activityproduct'], resolve)
+    //   },
+    //   falg: 3,
+    //   meta: {
+    //     // 商品详情 proDetail
+    //     title: i18n.t('meta.proDetail')
+    //   }
+    // },
+    { // 07-06活动商品主页
+      path: '/activityproduct/:lang',
+      name: 'activityproduct',
       component: (resolve) => {
-        require(['@/pages/productdetail/productdetail'], resolve)
+        require(['@/pages/productdetail/newproductdetail/activityproduct'], resolve)
       },
       falg: 3,
       meta: {
@@ -453,14 +557,26 @@ export default new Router({
       }
     },
     {
-      path: '/testslider/:lang',
-      name: 'testslider',
+      path: '/course/:lang',
+      name: 'course',
       component: (resolve) => {
-        require(['@/pages/testslider/testslider'], resolve)
+        require(['@/pages/course/course'], resolve)
       },
       meta: {
-        // 测试组件可以删除
-        title: i18n.t('meta.submitaddress')
+        // 确认收货地址 submitaddress
+        title: 'Guardar'
+      }
+    },
+    // 活动路由
+    {
+      path: '/activity/:lang',
+      name: 'activity',
+      component: (resolve) => {
+        require(['@/pages/activity/activity'], resolve)
+      },
+      meta: {
+        // 确认收货地址 submitaddress
+        title: 'Guardar'
       }
     }
   ]

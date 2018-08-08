@@ -13,9 +13,17 @@
         type: Number,
         default: 1
       },
+      listenScrollEnd: {
+        type: Boolean,
+        default: true
+      },
       click: {
         type: Boolean,
         default: true
+      },
+      proObj: {
+        type: Object,
+        default: null
       },
       listenScroll: {
         type: Boolean,
@@ -36,6 +44,14 @@
       pullUp: {
         type: Boolean,
         default: true
+      },
+      sizestring: {
+        type: String,
+        default: ''
+      },
+      special: {
+        type: Boolean,
+        default: false
       }
     },
     mounted () {
@@ -56,20 +72,35 @@
         if (this.listenScroll) {
           let me = this
           this.scroll.on('scroll', (pos) => {
+            // 派发滚动事件
             me.$emit('scroll', pos)
           })
         }
         if (this.pullDown) {
           this.scroll.on('scrollEnd', (pos) => {
-            if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
-              this.$emit('scrollDown')
+            if (!this.special) {
+              if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
+                // 派发上拉加载
+                this.$emit('scrollDown')
+              }
+            } else {
+              if (this.scroll.y <= (this.scroll.maxScrollY + 600)) {
+                // 派发上拉加载
+                this.$emit('scrollDown')
+              }
             }
+          })
+        }
+        if (this.listenScrollEnd) {
+          this.scroll.on('scrollEnd', (pos) => {
+            // 派发滚动停止事件
+            this.$emit('scrollEnd', this.scroll.y)
           })
         }
         if (this.pullUp) {
           this.scroll.on('touchend', (pos) => {
-            // console.log(pos)
             if (pos.y > 50) {
+              // 派发下拉刷新
               this.$emit('pullDown')
             }
           })
@@ -104,6 +135,16 @@
         }, this.refreshDelay)
       },
       list () {
+        setTimeout(() => {
+          this.refresh()
+        }, this.refreshDelay)
+      },
+      proObj () {
+        setTimeout(() => {
+          this.refresh()
+        }, this.refreshDelay)
+      },
+      sizestring () {
         setTimeout(() => {
           this.refresh()
         }, this.refreshDelay)

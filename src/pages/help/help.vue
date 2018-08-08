@@ -16,7 +16,7 @@
     </div>
     <div class="bottom">
       <!-- 客服邮箱 -->
-      <p>{{$t('question.customerServiceEm')}}：servicio@1peso.com.mx</p>
+      <p>{{$t('question.customerServiceEm')}}：soporte@1peso.com.mx</p>
     </div>
   </div>
 </template>

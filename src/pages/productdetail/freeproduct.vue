@@ -168,7 +168,8 @@
         unionLoginState: unionLoginState,
         proClassState: false,
         freestate: 0,
-        part: '1'
+        part: '1',
+        channelType: ''
       }
     },
     computed: {
@@ -184,6 +185,7 @@
       }
     },
     created () {
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
       this.issueNo = this.$route.query.issueNo
       this.previous = this.$route.query.previous
       this._getIssueDetail(this.$route.query.issueNo)
@@ -206,15 +208,15 @@
       },
       toParticipator () {
         // 前往参与者页面
-        this.$router.push({path: '/participator/' + this.$i18n.locale, query: {issueNo: this.issueNo}})
+        this.$router.push({path: '/participator/' + this.$i18n.locale, query: {issueNo: this.issueNo, channelType: this.channelType, channelTag: this.channelTag}})
       },
       toFormula () {
         // 前往计算详情
-        this.$router.push({path: '/formula/' + this.$i18n.locale, query: {issueNo: this.issueNo}})
+        this.$router.push({path: '/formula/' + this.$i18n.locale, query: {issueNo: this.issueNo, channelType: this.channelType, channelTag: this.channelTag}})
       },
       toSnatchon () {
         // 前往我的夺宝号
-        this.$router.push({path: '/snatchno/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo}})
+        this.$router.push({path: '/snatchno/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, channelType: this.channelType, channelTag: this.channelTag}})
       },
       showNavBar () {
         // 显示隐藏导航
@@ -222,18 +224,18 @@
       },
       toAllGoods () {
         // 前往商品列表
-        this.$router.push({path: '/goodslist/' + this.$i18n.locale, query: {tag: 0}})
+        this.$router.push({path: '/goodslist/' + this.$i18n.locale, query: {tag: 0, channelType: this.channelType, channelTag: this.channelTag}})
       },
       toUserrecord () {
         // 前往中奖记录
-        let state = loginState({router: this.$router, issueNo: this.$route.query.issueNo, tag: this.tag})
+        let state = loginState({router: this.$router, issueNo: this.$route.query.issueNo, tag: this.tag, channelType: this.channelType, channelTag: this.channelTag})
         if (state) {
-          this.$router.push({path: '/userrecord/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo}})
+          this.$router.push({path: '/userrecord/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, channelType: this.channelType, channelTag: this.channelTag}})
         }
       },
       toHelp () {
         // 前往帮助中心
-        this.$router.push({path: '/help/' + this.$i18n.locale})
+        this.$router.push({path: '/help/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       },
       _getIssueDetail (issueNo) {
         // 获取期号详情
@@ -298,17 +300,17 @@
       },
       toProdectImg () {
         // 前往图文详情
-        this.$router.push({path: '/prodectImg/' + this.$i18n.locale, query: {goodsId: this.goodsId}})
+        this.$router.push({path: '/prodectImg/' + this.$i18n.locale, query: {goodsId: this.goodsId, channelType: this.channelType, channelTag: this.channelTag}})
       },
       backHome () {
         if (this.$route.query.pro) {
           this.$router.back()
         } else {
-          this.$router.push('/home/' + this.$i18n.locale)
+          this.$router.push({path: '/home/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
         }
       },
       toPrevious () {
-        this.$router.push({path: '/previous/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, itemId: this.itemId}})
+        this.$router.push({path: '/previous/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, itemId: this.itemId, channelType: this.channelType, channelTag: this.channelTag}})
       },
       hideBetAlert () {
         this.betstate = false
@@ -633,7 +635,7 @@
           border-radius:0.1rem
           right:0
         .proMorePro
-          width:100%
+          width:6.4rem
     .bottom_container
       background:$color-bgcolor
       padding-bottom:1.6rem

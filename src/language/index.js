@@ -6,8 +6,13 @@ import Spanish from './spanish'
 
 Vue.use(VueI18n)
 
-const language = localStorage.getItem('ELEMENT_LANGUAGE') ? localStorage.getItem('ELEMENT_LANGUAGE') : 'mx'
-
+// let language = localStorage.getItem('ELEMENT_LANGUAGE') ? localStorage.getItem('ELEMENT_LANGUAGE') : 'mx'
+const language = 'mx'
+// if (navigator.language && navigator.language === 'zh-CN') {
+//   language = 'zh'
+// } else {
+//   language = 'mx'
+// }
 export default new VueI18n({
   locale: language,
   fallbackLocale: language,

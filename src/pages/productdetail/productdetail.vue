@@ -6,15 +6,22 @@
       :issueNo="issueObj.issueNo"
       :surplusBuy="issueObj.surplusBuy"
       :goldnumber="goldNumber"
+      :channelTypes="channelType"
+      :channelTags="channelTag"
       :betstate="betstate" @hideThis="hideBetAlert"></betalert>
     <div class="title">
-      <span class="icon-fanhui1 left" @click="returnGoodsList"></span>
-      <span class="icon-icon- right" @click="showNavBar"></span>
+      <div class="titlecontainer">
+        <span class="icon-fanhui1 left" @click="returnGoodsList"></span>
+        <span class="icon-icon- right" @click="showNavBar"></span>
+      </div>
     </div>
     <div class="navBar" v-show="navBarState">
       <ul class="list">
         <li class="item" @click="refreshData">{{$t('product.reload')}}</li>
-        <li class="item" @click="toUserrecord">{{$t('product.prizeRecord')}}</li>
+        <li class="item" @click="toUserrecord">
+          <span>{{$t('product.prizeRecord')}}</span>
+          <p class="dotnums" v-show="nums !== 0">{{nums}}</p>
+        </li>
         <li class="item" @click="toHelp">{{$t('product.help')}}</li>
       </ul>
     </div>
@@ -168,19 +175,35 @@
         issueState: false,
         navBarState: false,
         goldNumber: 0,
-        newIssueState: false
+        newIssueState: false,
+        nums: 0,
+        channelType: 'q',
+        channelTag: '2'
       }
     },
     created () {
-      // this.cookie = getCookie('lkey')
+      [this.channelType, this.channelTag] = [this.$route.query.channelType, this.$route.query.channelTag]
       this.issueNo = this.$route.query.issueNo
       this.previous = this.$route.query.previous
       this._getIssueDetail(this.$route.query.issueNo)
       this._getUserIgouNumberList(this.issueNo)
+      this._getSimpleUserInfo()
       scrollTo(0, 0)
       this.tag = this.$route.query.tag
+      this.reportProductDetail()
     },
     methods: {
+      reportProductDetail () {
+        // 上报商品详情访问总数
+        if (this.$ga) {
+          this.$ga.event({
+            eventCategory: '渠道',
+            eventAction: `商品详情访问总数`,
+            eventLabel: `渠道:${this.channelTag ? this.channelTag : '6_7_0_0'}/商品期号:${this.issueNo}`,
+            eventValue: 0
+          })
+        }
+      },
       refreshData () {
         // 刷新页面数据
         this._getIssueDetail(this.$route.query.issueNo)
@@ -188,11 +211,11 @@
       },
       toFormula () {
         // 前往计算详情
-        this.$router.push({path: '/formula/' + this.$i18n.locale, query: {issueNo: this.issueNo}})
+        this.$router.push({path: '/formula/' + this.$i18n.locale, query: {issueNo: this.issueNo, channelType: this.channelType, channelTag: this.channelTag}})
       },
       toSnatchon () {
         // 前往我的夺宝号
-        this.$router.push({path: '/snatchno/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, tag: this.tag}})
+        this.$router.push({path: '/snatchno/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, tag: this.tag, channelType: this.channelType, channelTag: this.channelTag}})
       },
       _getSimpleUserInfo () {
         // 获取金币数量
@@ -201,6 +224,7 @@
         }).then(res => {
           if (res.data.errCode === this.$ERR_CODE && res.data.retCode === this.$RET_CODE) {
             this.goldNumber = res.data.data.gold
+            this.nums = res.data.data.num
             this.loginState = true
           } else {
             if (res.data.errCode === 3 && res.data.retCode === 3) {
@@ -254,7 +278,6 @@
               case 1:
                 // 进行中
                 this.stateText = this.$t('product.stateText[0]')
-                this._getSimpleUserInfo()
                 break
               case 2:
                 // 进行中
@@ -283,23 +306,23 @@
       },
       toParticipator () {
         // 前往参与者
-        this.$router.push({path: '/participator/' + this.$i18n.locale, query: {issueNo: this.issueNo}})
+        this.$router.push({path: '/participator/' + this.$i18n.locale, query: {issueNo: this.issueNo, channelType: this.channelType, channelTag: this.channelTag}})
       },
       toProdectImg () {
         // 前往图文详情
-        this.$router.push({path: '/prodectImg/' + this.$i18n.locale, query: {goodsId: this.goodsId}})
+        this.$router.push({path: '/prodectImg/' + this.$i18n.locale, query: {goodsId: this.goodsId, channelType: this.channelType, channelTag: this.channelTag}})
       },
       returnGoodsList () {
-        if (this.tag) {
-          this.$router.push({path: '/goodslist/' + this.$i18n.locale, query: {tag: this.tag}})
-        } else if (this.$route.query.newIssue) {
-          this.$router.push({path: '/home/' + this.$i18n.locale})
+        if (this.$route.query.tag) {
+          this.$router.push({path: '/goodslist/' + this.$i18n.locale, query: {tag: this.tag, channelType: this.channelType, channelTag: this.channelTag}})
+        } else if (this.$route.query.falg) {
+          this.$router.push({path: '/home/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
         } else {
           this.$router.back()
         }
       },
       toPrevious () {
-        this.$router.push({path: '/previous/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, itemId: this.itemId}})
+        this.$router.push({path: '/previous/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, itemId: this.itemId, channelType: this.channelType, channelTag: this.channelTag}})
       },
       showNavBar () {
         // 隐藏导航
@@ -312,16 +335,17 @@
       },
       toUserrecord () {
         // 前往中奖记录
+        // console.log(this.loginState)
         // let state = loginState({router: this.$router, issueNo: this.$route.query.issueNo, tag: this.tag})
         if (this.loginState) {
-          this.$router.push({path: '/userrecord/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, tag: this.tag}})
+          this.$router.push({path: '/userrecord/' + this.$i18n.locale, query: {issueNo: this.$route.query.issueNo, tag: this.tag, channelType: this.channelType, channelTag: this.channelTag}})
         } else {
-          this.$router.push({path: '/interim/' + this.$i18n.locale})
+          this.$router.push({path: '/interim/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
         }
       },
       toHelp () {
         // 前往帮助中心
-        this.$router.push({path: '/help/' + this.$i18n.locale})
+        this.$router.push({path: '/help/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag}})
       },
       hideBetAlert (msg) {
         this.betstate = false
@@ -345,13 +369,20 @@
         // 登录态校验
         // cookie = true
         // let state = true
+        this.$ga.event({
+          eventCategory: '渠道',
+          eventAction: '点击参与',
+          eventLabel: `渠道:${this.channelTag ? this.channelTag : '6_7_0_0'}`,
+          eventValue: 0
+        })
         let state = loginState({router: this.$router, issueNo: this.$route.query.issueNo, tag: this.tag})
-        let isInsideAndroid = this.isInsideAndroid()
+        // let isInsideAndroid = this.isInsideAndroid()
+        let isInsideAndroid = false
         if (!isInsideAndroid) {
           if (this.loginState) {
             this.betstate = true
           } else {
-            this.$router.push({path: '/interim/' + this.$i18n.locale})
+            this.$router.push({path: '/interim/' + this.$i18n.locale, query: {channelType: this.channelType, channelTag: this.channelTag, issueNo: this.$route.query.issueNo}})
           }
         } else {
           if (state) {
@@ -364,7 +395,7 @@
       },
       toNewIssue () {
         // 前往最新一期
-        this.$router.push({path: '/productdetail/' + this.$i18n.locale, query: {issueNo: this.issueObj.currIssueNo, newIssue: 1}})
+        this.$router.push({path: '/productdetail/' + this.$i18n.locale, query: {issueNo: this.issueObj.currIssueNo, newIssue: 1, channelType: this.channelType, channelTag: this.channelTag}})
         this._getIssueDetail(this.issueObj.currIssueNo)
         this._getUserIgouNumberList(this.issueObj.currIssueNo)
       }
@@ -444,34 +475,49 @@
           line-height:0.9rem
           padding-left:0.2rem
           padding-right:0.2rem
+          display:flex
+          align-items:center
+          .dotnums
+            width:0.4rem
+            height:0.4rem
+            line-height:0.45rem
+            text-align:center
+            color:#fff
+            font-size:0.2rem
+            border-radius:100%
+            background:$color-meta
+            margin-left:0.1rem
       .list>li:not(:last-child)
         border-bottom:1px solid $color-border
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
       border-bottom:1px solid $color-border
-      .left
-        position:absolute
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        left:0
-        font-size:0.4rem
-        color:$color-meta
-      .right
-        position:absolute
-        right:0
-        font-size:0
-        padding:0.175rem 0.25rem 0.175rem 0.3rem
-        font-size:0.55rem
-        color:$color-meta
+      .titlecontainer
+        display:flex
+        justify-content:space-between
+        align-items:center
+        height:100%
+        margin:auto 0.32rem
+        .left
+          position:absolute
+          padding:0rem 0.3rem 0 0.25rem
+          left:0
+          font-size:0.4rem
+          color:$color-meta
+        .right
+          position:absolute
+          right:0
+          font-size:0
+          padding:0 0.25rem 0 0.3rem
+          font-size:0.55rem
+          color:$color-meta
     .issue
       position:fixed
       z-index:1000

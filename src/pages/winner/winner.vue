@@ -1,9 +1,11 @@
 <template>
   <div class="winner">
     <div class="title">
-      <span @click="backHome" class="left icon-fanhui1"></span>
-      <!-- 获奖者 -->
-      <p>{{$t('userRecord.winners')}}</p>
+      <div class="titlecontainer">
+        <span @click="backHome" class="left icon-fanhui1"></span>
+        <!-- 获奖者 -->
+        <p>{{$t('userRecord.winners')}}</p>
+      </div>
     </div>
     <div class="container">
       <scroll
@@ -16,6 +18,7 @@
           <!-- <div class="loading" v-show="loading1">
             <loading></loading>
           </div> -->
+          <p class="ganadores">Ganadores de hoy</p>
           <ul class="winnerlist">
             <li class="winneritem" v-for="(list, index) in dealList"
             :class="{'winneritemAvtive': touchState&&index === ind}"
@@ -46,6 +49,7 @@
           <div class="nolist" v-if="!dealList.length&&!loading2">
             <p>{{$t('userRecord.nodata')}}</p>
           </div>
+          <ad></ad>
         </div>
       </scroll>
     </div>
@@ -55,7 +59,8 @@
 <script>
   import scroll from '@/components/scroll/scroll'
   import loading from '@/components/loading/loading'
-  import { queryAllWinner } from 'api/usercenter'
+  import { getTodayOpenInfo } from 'api/usercenter'
+  import ad from '@/components/ad/ad'
   export default {
     data () {
       return {
@@ -91,7 +96,7 @@
       },
       _getAllWinner ({page = 0, pageSize = 10}) {
         this.loading1 = true
-        queryAllWinner({
+        getTodayOpenInfo({
           page: page,
           pageSize: pageSize
         }).then(res => {
@@ -116,7 +121,8 @@
     },
     components: {
       scroll,
-      loading
+      loading,
+      ad
     }
   }
 </script>
@@ -133,31 +139,39 @@
     .title
       font-size:$font-meta
       height:$meta-height
-      padding: 0 0.32rem 0 0.32rem
-      display:flex
-      justify-content:space-between
-      align-items:center
+      line-height:$meta-height
       position:fixed
-      width:6.86rem
+      width:100%
       background:$color-white
       color: $color-general-font
       z-index:100
       border-bottom:1px solid $color-border
-      .left
-        position:absolute
-        padding:0.25rem 0.3rem 0.25rem 0.25rem
-        left:0
-        font-size:0.4rem
-        color:$color-meta
-      p
-        text-align:center
-        width:100%
+      .titlecontainer
+        display:flex
+        justify-content:space-between
+        align-items:center
+        margin:auto 0.32rem
+        .left
+          position:absolute
+          padding:0 0.3rem 0 0.25rem
+          left:0
+          font-size:0.4rem
+          color:$color-meta
+        p
+          text-align:center
+          width:100%
     .container
       padding-top:$meta-height
       .content
-        height:10.5rem
+        height:9rem
         .card
+          .ganadores
+            height:1rem
+            line-height:1rem
+            font-size:0.3rem
+            margin:auto 0.32rem
           .winnerlist
+            min-height:8rem
             .winneritem
               height:2rem
               border-top:1px solid $color-border
